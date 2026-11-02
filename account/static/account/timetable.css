@@ -1,0 +1,88 @@
+
+.tt {
+table-layout: fixed;
+min-width: 820px;
+}
+.tt th,
+.tt td {
+border: 1px solid var(--line);
+padding: 6px;
+text-align: center;
+white-space: normal;
+}
+.tt th {
+background: var(--paper);
+font-size: 14px;
+color: var(--ink);
+}
+.tt td.time {
+font-size: 12px;
+color: var(--ink-soft);
+width: 120px;
+background: var(--paper);
+}
+.tt tr.break td {
+background: var(--paper);
+color: var(--ink-soft);
+font-size: 13px;
+padding: 8px;
+letter-spacing: 0.02em;
+}
+.tt tbody tr:hover {
+background: none;
+}
+.slot {
+display: block;
+text-align: left;
+padding: 8px 10px;
+border-radius: 6px;
+border-left: 4px solid;
+}
+.slot b {
+display: block;
+font-size: 13px;
+}
+.slot small {
+font-size: 11px;
+color: var(--ink-soft);
+}
+.slot:hover {
+filter: brightness(0.96);
+}
+.s-blue {
+background: var(--blue-soft);
+border-color: var(--blue);
+}
+.s-amber {
+background: var(--amber-soft);
+border-color: var(--amber);
+}
+.s-teal {
+background: var(--teal-soft);
+border-color: var(--teal);
+}
+.s-red {
+background: var(--red-soft);
+border-color: var(--red);
+}
+.s-gray {
+background: var(--paper);
+border-color: var(--ink-soft);
+}
+.key {
+display: grid;
+gap: 10px;
+font-size: 14px;
+}
+.key span {
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.key i {
+width: 22px;
+height: 14px;
+border-radius: 4px;
+border-left: 4px solid;
+display: inline-block;
+}

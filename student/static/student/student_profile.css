@@ -1,0 +1,27 @@
+
+  /* Profile page specific styles. Base styles come from style.css and components.css */
+  .profile-layout { display: grid; grid-template-columns: 320px 1fr; gap: 24px; align-items: start; }
+  .profile-layout  * { min-width: 0; }
+  .side-card { position: sticky; top: 90px; display: grid; gap: 18px; text-align: center; }
+  .photo { width: 112px; height: 112px; border-radius: 50%; margin: 0 auto; background: var(--blue-soft); color: var(--blue); display: grid; place-items: center; font-size: 38px; font-weight: 700; overflow: hidden; }
+  .photo img { width: 100%; height: 100%; object-fit: cover; }
+  .side-card h2 { font-size: 20px; }
+  .side-card p { color: var(--ink-soft); font-size: 14px; }
+  .side-card input[type="file"] { font-size: 13px; padding: 8px; }
+  .side-card .info { grid-template-columns: 1fr 1fr; text-align: left; padding-top: 16px; border-top: 1px solid var(--line); }
+  .complete { text-align: left; }
+  .complete .top { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; }
+  .complete small { display: block; margin-top: 8px; color: var(--ink-soft); font-size: 12px; }
+
+  .stack { display: grid; gap: 24px; }
+  .hint { font-size: 12px; font-weight: 400; color: var(--ink-soft); }
+  input[readonly] { opacity: .7; cursor: not-allowed; }
+  .alert-ok { background: var(--teal-soft); color: var(--teal); padding: 12px 14px; border-radius: 8px; font-size: 14px; font-weight: 600; }
+  .save-bar { position: sticky; bottom: 12px; z-index: 4; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 16px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 6px 24px rgba(0,0,0,.14); }
+  .save-bar span { font-size: 13px; color: var(--ink-soft); }
+
+  @media (max-width: 1000px) {
+    .profile-layout { grid-template-columns: 1fr; }
+    .side-card { position: static; }
+  }
+  @media (max-width: 700px) { .form-grid { grid-template-columns: 1fr; } }

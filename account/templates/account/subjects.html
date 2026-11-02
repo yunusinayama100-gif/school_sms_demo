@@ -1,0 +1,1005 @@
+{% extends "account/admin.html" %}
+{% load static %}
+{% block title %}teacher dashboard{% endblock title %}
+{% block styles %}
+<link rel="stylesheet" href="{% static "account/components.css" %}">
+{% endblock styles %}
+{% block main %}
+
+<main class="content">
+    <div class="page-head">
+    <div>
+        <h1>Subjects</h1>
+        <p>
+        <a
+            href="superuser-dashboard.html"
+            style="text-decoration: underline"
+            >Dashboard</a
+        >
+        / Subjects
+        </p>
+    </div>
+    <div class="btn-row">
+        <a href="#" class="btn">Export list</a
+        ><a href="#add-subject" class="btn btn-primary">Add subject</a>
+    </div>
+    </div>
+    <section class="stats" aria-label="Key numbers">
+    <article class="card stat">
+        <span class="label">All subjects</span
+        ><span class="value">18</span
+        ><span class="note">Across all levels</span>
+    </article>
+    <article class="card stat">
+        <span class="label">Core subjects</span
+        ><span class="value">12</span
+        ><span class="note">Taken by every student</span>
+    </article>
+    <article class="card stat">
+        <span class="label">Elective subjects</span
+        ><span class="value">6</span
+        ><span class="note">Chosen by students</span>
+    </article>
+    <article class="card stat">
+        <span class="label">Without a teacher</span
+        ><span class="value">2</span
+        ><span class="note">Computer studies, Music</span>
+    </article>
+    </section>
+    <section class="card" id="list">
+    <div class="card-head">
+        <h2>Subject list</h2>
+        <span>Showing 7 of 18</span>
+    </div>
+    <form class="toolbar" action="subjects.html" method="get">
+        <label class="field grow"
+        >Search<input
+            type="search"
+            name="q"
+            placeholder="Subject name or code" /></label
+        ><label class="field"
+        >Level<select name="level">
+            <option value="">All</option>
+            <option>Pre-primary</option>
+            <option>Primary</option>
+            <option>Secondary</option>
+        </select></label
+        ><label class="field"
+        >Department<select name="dept">
+            <option value="">All</option>
+            <option>Sciences</option>
+            <option>Languages</option>
+            <option>Humanities</option>
+            <option>Technology</option>
+            <option>Arts</option>
+        </select></label
+        ><label class="field"
+        >Type<select name="type">
+            <option value="">All</option>
+            <option>Core</option>
+            <option>Elective</option>
+        </select></label
+        ><button class="btn btn-primary" type="submit">
+        Apply filters</button
+        ><a class="btn" href="subjects.html">Clear</a>
+    </form>
+    <div class="bulk">
+        <span>Select rows to act on several at once.</span>
+        <div class="btn-row">
+        <a href="#" class="btn btn-sm">Assign to classes</a
+        ><a href="#" class="btn btn-sm">Export list</a>
+        </div>
+    </div>
+    <div class="table-wrap">
+        <table>
+        <thead>
+            <tr>
+            <th>
+                <input type="checkbox" aria-label="Select all subjects" />
+            </th>
+            <th>Code</th>
+            <th>Subject</th>
+            <th>Level</th>
+            <th>Department</th>
+            <th>Teacher</th>
+            <th>Periods</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+          {% for subject in subjects %}
+            <tr>
+            <td>
+                <input type="checkbox" aria-label="Select Mathematics" />
+            </td>
+            <td>{{subject.subject_code}}</td>
+            <td><b>{{subject.subject_name}}</b></td>
+            <td>{{subject.level}}</td>
+            <td>{{subject.department}}</td>
+            <td>{{subject.teacher_assigned}}</td>
+            <td>{{subject.periods_per_week}}</td>
+            <td><span class="badge b-info">Core</span></td>
+            <td><span class="badge b-ok">Active</span></td>
+            <td>
+                <div class="row-actions">
+                <a href="#edit-b{{subject.id}}" class="btn btn-sm">Edit</a
+                ><a href="#delete-b{{subject.id}}" class="btn btn-sm btn-danger"
+                    >Delete</a
+                >
+                </div>
+            </td>
+            </tr>
+            {% endfor %}
+
+            <tr>
+            <td>
+                <input type="checkbox" aria-label="Select English" />
+            </td>
+            <td>ENG-F</td>
+            <td><b>English</b></td>
+            <td>Secondary</td>
+            <td>Languages</td>
+            <td>Esther Mollel</td>
+            <td>5</td>
+            <td><span class="badge b-info">Core</span></td>
+            <td><span class="badge b-ok">Active</span></td>
+            <td>
+                <div class="row-actions">
+                <a href="#edit-b2" class="btn btn-sm">Edit</a
+                ><a href="#delete-b2" class="btn btn-sm btn-danger"
+                    >Delete</a
+                >
+                </div>
+            </td>
+            </tr>
+            <tr>
+            <td>
+                <input type="checkbox" aria-label="Select Kiswahili" />
+            </td>
+            <td>KIS-P</td>
+            <td><b>Kiswahili</b></td>
+            <td>Primary</td>
+            <td>Languages</td>
+            <td>Rehema Tarimo</td>
+            <td>5</td>
+            <td><span class="badge b-info">Core</span></td>
+            <td><span class="badge b-ok">Active</span></td>
+            <td>
+                <div class="row-actions">
+                <a href="#edit-b3" class="btn btn-sm">Edit</a
+                ><a href="#delete-b3" class="btn btn-sm btn-danger"
+                    >Delete</a
+                >
+                </div>
+            </td>
+            </tr>
+            <tr>
+            <td>
+                <input type="checkbox" aria-label="Select Biology" />
+            </td>
+            <td>BIO-F</td>
+            <td><b>Biology</b></td>
+            <td>Secondary</td>
+            <td>Sciences</td>
+            <td>Salma Hassan</td>
+            <td>4</td>
+            <td><span class="badge b-info">Core</span></td>
+            <td><span class="badge b-ok">Active</span></td>
+            <td>
+                <div class="row-actions">
+                <a href="#edit-b4" class="btn btn-sm">Edit</a
+                ><a href="#delete-b4" class="btn btn-sm btn-danger"
+                    >Delete</a
+                >
+                </div>
+            </td>
+            </tr>
+            <tr>
+            <td>
+                <input type="checkbox" aria-label="Select History" />
+            </td>
+            <td>HIS-F</td>
+            <td><b>History</b></td>
+            <td>Secondary</td>
+            <td>Humanities</td>
+            <td>John Massawe</td>
+            <td>3</td>
+            <td><span class="badge b-info">Core</span></td>
+            <td><span class="badge b-ok">Active</span></td>
+            <td>
+                <div class="row-actions">
+                <a href="#edit-b5" class="btn btn-sm">Edit</a
+                ><a href="#delete-b5" class="btn btn-sm btn-danger"
+                    >Delete</a
+                >
+                </div>
+            </td>
+            </tr>
+            <tr>
+            <td>
+                <input
+                type="checkbox"
+                aria-label="Select Computer studies"
+                />
+            </td>
+            <td>COM-F</td>
+            <td><b>Computer studies</b></td>
+            <td>Secondary</td>
+            <td>Technology</td>
+            <td>Not assigned</td>
+            <td>2</td>
+            <td><span class="badge b-wait">Elective</span></td>
+            <td><span class="badge b-bad">Needs teacher</span></td>
+            <td>
+                <div class="row-actions">
+                <a href="#edit-b6" class="btn btn-sm">Edit</a
+                ><a href="#delete-b6" class="btn btn-sm btn-danger"
+                    >Delete</a
+                >
+                </div>
+            </td>
+            </tr>
+            <tr>
+            <td>
+                <input
+                type="checkbox"
+                aria-label="Select Art and craft"
+                />
+            </td>
+            <td>ART-P</td>
+            <td><b>Art and craft</b></td>
+            <td>Primary</td>
+            <td>Arts</td>
+            <td>Neema Boniface</td>
+            <td>2</td>
+            <td><span class="badge b-wait">Elective</span></td>
+            <td><span class="badge b-ok">Active</span></td>
+            <td>
+                <div class="row-actions">
+                <a href="#edit-b7" class="btn btn-sm">Edit</a
+                ><a href="#delete-b7" class="btn btn-sm btn-danger"
+                    >Delete</a
+                >
+                </div>
+            </td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+    <div class="pager">
+        <span>Page 1 of 3</span>
+        <nav aria-label="Pagination">
+        <a href="#list">Previous</a
+        ><a href="#list" aria-current="page">1</a><a href="#list">2</a
+        ><a href="#list">3</a><a href="#list">Next</a>
+        </nav>
+    </div>
+    </section>
+    <section class="grid-2">
+    <article class="card">
+        <div class="card-head">
+        <h2>Periods per week by department</h2>
+        </div>
+        <div class="meter">
+        <div class="meter-row">
+            <div class="top"><span>Sciences</span><b>62</b></div>
+            <div class="track"><i class="" style="width: 100%"></i></div>
+        </div>
+        <div class="meter-row">
+            <div class="top"><span>Languages</span><b>48</b></div>
+            <div class="track">
+            <i class="blue" style="width: 77%"></i>
+            </div>
+        </div>
+        <div class="meter-row">
+            <div class="top"><span>Humanities</span><b>30</b></div>
+            <div class="track">
+            <i class="red" style="width: 48%"></i>
+            </div>
+        </div>
+        <div class="meter-row">
+            <div class="top"><span>Technology</span><b>12</b></div>
+            <div class="track">
+            <i class="amber" style="width: 19%"></i>
+            </div>
+        </div>
+        <div class="meter-row">
+            <div class="top"><span>Arts and sports</span><b>14</b></div>
+            <div class="track">
+            <i class="amber" style="width: 23%"></i>
+            </div>
+        </div>
+        </div>
+    </article>
+    <article class="card">
+        <div class="card-head"><h2>Shortcuts</h2></div>
+        <div class="shortcuts">
+        <a href="#"
+            >Assign subjects to classes<small
+            >Choose which classes take each subject</small
+            ></a
+        ><a href="timetable.html"
+            >Open timetable<small
+            >Place subjects into weekly periods</small
+            ></a
+        ><a href="#"
+            >Grading scale<small>Set grades and pass marks</small></a
+        ><a href="#"
+            >Exam subjects<small
+            >Pick subjects for the next exam</small
+            ></a
+        >
+        </div>
+    </article>
+    </section>
+</main>
+      {% for subject in subjects %}
+    <div class="modal" id="edit-b{{subject.id}}" role="dialog" aria-label="Edit subject">
+      <a class="modal-bg" href="#list" aria-label="Close"></a>
+      <form class="modal-box" action="{% url "edit_subject" subject.id %}" method="post">
+        {% csrf_token %}
+        <div class="modal-head">
+          <div>
+            <h2>Edit subject</h2>
+            <p>{{subject.subject_code}}</p>
+          </div>
+          <a class="close" href="#list" aria-label="Close">&times;</a>
+        </div>
+        <div class="form-grid">
+          <label
+            >Subject code *<input
+              type="text"
+              name="subject_code"
+              value="{{subject.subject_code}}"
+              required /></label
+          ><label
+            >Subject name *<input
+              type="text"
+              name="subject_name"
+              value="{{subject.subject_name}}"
+              required /></label
+          ><label
+            >Level<select name="level">
+              <option>{{subject.level}}</option>
+              <option>Primary</option>
+              <option>Ordinary</option>
+              <option selected>Secondary</option>
+            </select></label
+          ><label
+            >Department<input type="text" name="department" value="{{subject.department}}" /></label
+          ><label
+            >Type<select name="subject_type">
+              <option selected>{{subject.subject_type}}</option>
+              <option>Core</option>
+              <option>Elective</option>
+            </select></label
+          ><label
+            >Periods per week<input
+              type="number"
+              name="periods_per_week"
+              value="{{subject.periods_per_week}}" /></label
+          ><label class="full"
+            >Teacher<select name="teacher_assigned">
+              <option>Salma Hassan</option>
+              <option selected>{{subject.teacher_assigned}}</option>
+              <option>Esther Mollel</option>
+              <option>Rehema Tarimo</option>
+              <option>John Massawe</option>
+              <option>Neema Boniface</option>
+              <option>Not assigned</option>
+            </select></label
+          ><label
+            >Subject description *<input
+              type="text"
+              name="description"
+              value="{{subject.description}}"
+              required /></label
+          >
+        </div>
+        <div class="modal-foot">
+          <a href="#list" class="btn">Cancel</a
+          ><button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div>
+    <div
+      class="modal"
+      id="delete-b{{subject.id}}"
+      role="dialog"
+      aria-label="Delete Mathematics?"
+    >
+      <a class="modal-bg" href="#list" aria-label="Close"></a>
+      <form class="modal-box small" action="{% url "delete_subject" subject.id %}" method="post">
+        {% csrf_token %}
+        <div class="modal-head">
+          <div><h2>Delete {{subject.subject_name}}?</h2></div>
+          <a class="close" href="#list" aria-label="Close">&times;</a>
+        </div>
+        <p>This removes the record permanently. This cannot be undone.</p>
+        <div class="warning-box">
+          Timetable periods and exam marks linked to this subject will lose
+          their subject. Consider marking it inactive instead.
+        </div>
+        <div class="modal-foot">
+          <a href="#list" class="btn">Cancel</a
+          ><button type="submit" class="btn btn-danger-solid">Delete</button>
+        </div>
+      </form>
+    </div>
+
+    {% endfor %}
+
+    <div class="modal" id="edit-b2" role="dialog" aria-label="Edit subject">
+      <a class="modal-bg" href="#list" aria-label="Close"></a>
+      <form class="modal-box" action="/subjects/2/edit" method="post">
+        <div class="modal-head">
+          <div>
+            <h2>Edit subject</h2>
+            <p>ENG-F</p>
+          </div>
+          <a class="close" href="#list" aria-label="Close">&times;</a>
+        </div>
+        <div class="form-grid">
+          <label
+            >Subject code *<input
+              type="text"
+              name="code"
+              value="ENG-F"
+              required /></label
+          ><label
+            >Subject name *<input
+              type="text"
+              name="name"
+              value="English"
+              required /></label
+          ><label
+            >Level<select name="level">
+              <option>Pre-primary</option>
+              <option>Primary</option>
+              <option selected>Secondary</option>
+            </select></label
+          ><label
+            >Department<input
+              type="text"
+              name="dept"
+              value="Languages" /></label
+          ><label
+            >Type<select name="type">
+              <option selected>Core</option>
+              <option>Elective</option>
+            </select></label
+          ><label
+            >Periods per week<input
+              type="number"
+              name="periods"
+              value="5" /></label
+          ><label class="full"
+            >Teacher<select name="teacher">
+              <option>Salma Hassan</option>
+              <option>Hassan Mrope</option>
+              <option selected>Esther Mollel</option>
+              <option>Rehema Tarimo</option>
+              <option>John Massawe</option>
+              <option>Neema Boniface</option>
+              <option>Not assigned</option>
+            </select></label
+          >
+        </div>
+        <div class="modal-foot">
+          <a href="#list" class="btn">Cancel</a
+          ><button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div>
+    <div
+      class="modal"
+      id="delete-b2"
+      role="dialog"
+      aria-label="Delete English?"
+    >
+      <a class="modal-bg" href="#list" aria-label="Close"></a>
+      <form class="modal-box small" action="/subjects/2/delete" method="post">
+        <div class="modal-head">
+          <div><h2>Delete English?</h2></div>
+          <a class="close" href="#list" aria-label="Close">&times;</a>
+        </div>
+        <p>This removes the record permanently. This cannot be undone.</p>
+        <div class="warning-box">
+          Timetable periods and exam marks linked to this subject will lose
+          their subject. Consider marking it inactive instead.
+        </div>
+        <div class="modal-foot">
+          <a href="#list" class="btn">Cancel</a
+          ><button type="submit" class="btn btn-danger-solid">Delete</button>
+        </div>
+      </form>
+    </div>
+    <div class="modal" id="edit-b3" role="dialog" aria-label="Edit subject">
+      <a class="modal-bg" href="#list" aria-label="Close"></a>
+      <form class="modal-box" action="/subjects/3/edit" method="post">
+        <div class="modal-head">
+          <div>
+            <h2>Edit subject</h2>
+            <p>KIS-P</p>
+          </div>
+          <a class="close" href="#list" aria-label="Close">&times;</a>
+        </div>
+        <div class="form-grid">
+          <label
+            >Subject code *<input
+              type="text"
+              name="code"
+              value="KIS-P"
+              required /></label
+          ><label
+            >Subject name *<input
+              type="text"
+              name="name"
+              value="Kiswahili"
+              required /></label
+          ><label
+            >Level<select name="level">
+              <option>Pre-primary</option>
+              <option selected>Primary</option>
+              <option>Secondary</option>
+            </select></label
+          ><label
+            >Department<input
+              type="text"
+              name="dept"
+              value="Languages" /></label
+          ><label
+            >Type<select name="type">
+              <option selected>Core</option>
+              <option>Elective</option>
+            </select></label
+          ><label
+            >Periods per week<input
+              type="number"
+              name="periods"
+              value="5" /></label
+          ><label class="full"
+            >Teacher<select name="teacher">
+              <option>Salma Hassan</option>
+              <option>Hassan Mrope</option>
+              <option>Esther Mollel</option>
+              <option selected>Rehema Tarimo</option>
+              <option>John Massawe</option>
+              <option>Neema Boniface</option>
+              <option>Not assigned</option>
+            </select></label
+          >
+        </div>
+        <div class="modal-foot">
+          <a href="#list" class="btn">Cancel</a
+          ><button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div>
+    <div
+      class="modal"
+      id="delete-b3"
+      role="dialog"
+      aria-label="Delete Kiswahili?"
+    >
+      <a class="modal-bg" href="#list" aria-label="Close"></a>
+      <form class="modal-box small" action="/subjects/3/delete" method="post">
+        <div class="modal-head">
+          <div><h2>Delete Kiswahili?</h2></div>
+          <a class="close" href="#list" aria-label="Close">&times;</a>
+        </div>
+        <p>This removes the record permanently. This cannot be undone.</p>
+        <div class="warning-box">
+          Timetable periods and exam marks linked to this subject will lose
+          their subject. Consider marking it inactive instead.
+        </div>
+        <div class="modal-foot">
+          <a href="#list" class="btn">Cancel</a
+          ><button type="submit" class="btn btn-danger-solid">Delete</button>
+        </div>
+      </form>
+    </div>
+    <div class="modal" id="edit-b4" role="dialog" aria-label="Edit subject">
+      <a class="modal-bg" href="#list" aria-label="Close"></a>
+      <form class="modal-box" action="/subjects/4/edit" method="post">
+        <div class="modal-head">
+          <div>
+            <h2>Edit subject</h2>
+            <p>BIO-F</p>
+          </div>
+          <a class="close" href="#list" aria-label="Close">&times;</a>
+        </div>
+        <div class="form-grid">
+          <label
+            >Subject code *<input
+              type="text"
+              name="code"
+              value="BIO-F"
+              required /></label
+          ><label
+            >Subject name *<input
+              type="text"
+              name="name"
+              value="Biology"
+              required /></label
+          ><label
+            >Level<select name="level">
+              <option>Pre-primary</option>
+              <option>Primary</option>
+              <option selected>Secondary</option>
+            </select></label
+          ><label
+            >Department<input type="text" name="dept" value="Sciences" /></label
+          ><label
+            >Type<select name="type">
+              <option selected>Core</option>
+              <option>Elective</option>
+            </select></label
+          ><label
+            >Periods per week<input
+              type="number"
+              name="periods"
+              value="4" /></label
+          ><label class="full"
+            >Teacher<select name="teacher">
+              <option selected>Salma Hassan</option>
+              <option>Hassan Mrope</option>
+              <option>Esther Mollel</option>
+              <option>Rehema Tarimo</option>
+              <option>John Massawe</option>
+              <option>Neema Boniface</option>
+              <option>Not assigned</option>
+            </select></label
+          >
+        </div>
+        <div class="modal-foot">
+          <a href="#list" class="btn">Cancel</a
+          ><button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div>
+    <div
+      class="modal"
+      id="delete-b4"
+      role="dialog"
+      aria-label="Delete Biology?"
+    >
+      <a class="modal-bg" href="#list" aria-label="Close"></a>
+      <form class="modal-box small" action="/subjects/4/delete" method="post">
+        <div class="modal-head">
+          <div><h2>Delete Biology?</h2></div>
+          <a class="close" href="#list" aria-label="Close">&times;</a>
+        </div>
+        <p>This removes the record permanently. This cannot be undone.</p>
+        <div class="warning-box">
+          Timetable periods and exam marks linked to this subject will lose
+          their subject. Consider marking it inactive instead.
+        </div>
+        <div class="modal-foot">
+          <a href="#list" class="btn">Cancel</a
+          ><button type="submit" class="btn btn-danger-solid">Delete</button>
+        </div>
+      </form>
+    </div>
+    <div class="modal" id="edit-b5" role="dialog" aria-label="Edit subject">
+      <a class="modal-bg" href="#list" aria-label="Close"></a>
+      <form class="modal-box" action="/subjects/5/edit" method="post">
+        <div class="modal-head">
+          <div>
+            <h2>Edit subject</h2>
+            <p>HIS-F</p>
+          </div>
+          <a class="close" href="#list" aria-label="Close">&times;</a>
+        </div>
+        <div class="form-grid">
+          <label
+            >Subject code *<input
+              type="text"
+              name="code"
+              value="HIS-F"
+              required /></label
+          ><label
+            >Subject name *<input
+              type="text"
+              name="name"
+              value="History"
+              required /></label
+          ><label
+            >Level<select name="level">
+              <option>Pre-primary</option>
+              <option>Primary</option>
+              <option selected>Secondary</option>
+            </select></label
+          ><label
+            >Department<input
+              type="text"
+              name="dept"
+              value="Humanities" /></label
+          ><label
+            >Type<select name="type">
+              <option selected>Core</option>
+              <option>Elective</option>
+            </select></label
+          ><label
+            >Periods per week<input
+              type="number"
+              name="periods"
+              value="3" /></label
+          ><label class="full"
+            >Teacher<select name="teacher">
+              <option>Salma Hassan</option>
+              <option>Hassan Mrope</option>
+              <option>Esther Mollel</option>
+              <option>Rehema Tarimo</option>
+              <option selected>John Massawe</option>
+              <option>Neema Boniface</option>
+              <option>Not assigned</option>
+            </select></label
+          >
+        </div>
+        <div class="modal-foot">
+          <a href="#list" class="btn">Cancel</a
+          ><button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div>
+    <div
+      class="modal"
+      id="delete-b5"
+      role="dialog"
+      aria-label="Delete History?"
+    >
+      <a class="modal-bg" href="#list" aria-label="Close"></a>
+      <form class="modal-box small" action="/subjects/5/delete" method="post">
+        <div class="modal-head">
+          <div><h2>Delete History?</h2></div>
+          <a class="close" href="#list" aria-label="Close">&times;</a>
+        </div>
+        <p>This removes the record permanently. This cannot be undone.</p>
+        <div class="warning-box">
+          Timetable periods and exam marks linked to this subject will lose
+          their subject. Consider marking it inactive instead.
+        </div>
+        <div class="modal-foot">
+          <a href="#list" class="btn">Cancel</a
+          ><button type="submit" class="btn btn-danger-solid">Delete</button>
+        </div>
+      </form>
+    </div>
+    <div class="modal" id="edit-b6" role="dialog" aria-label="Edit subject">
+      <a class="modal-bg" href="#list" aria-label="Close"></a>
+      <form class="modal-box" action="/subjects/6/edit" method="post">
+        <div class="modal-head">
+          <div>
+            <h2>Edit subject</h2>
+            <p>COM-F</p>
+          </div>
+          <a class="close" href="#list" aria-label="Close">&times;</a>
+        </div>
+        <div class="form-grid">
+          <label
+            >Subject code *<input
+              type="text"
+              name="code"
+              value="COM-F"
+              required /></label
+          ><label
+            >Subject name *<input
+              type="text"
+              name="name"
+              value="Computer studies"
+              required /></label
+          ><label
+            >Level<select name="level">
+              <option>Pre-primary</option>
+              <option>Primary</option>
+              <option selected>Secondary</option>
+            </select></label
+          ><label
+            >Department<input
+              type="text"
+              name="dept"
+              value="Technology" /></label
+          ><label
+            >Type<select name="type">
+              <option>Core</option>
+              <option selected>Elective</option>
+            </select></label
+          ><label
+            >Periods per week<input
+              type="number"
+              name="periods"
+              value="2" /></label
+          ><label class="full"
+            >Teacher<select name="teacher">
+              <option>Salma Hassan</option>
+              <option>Hassan Mrope</option>
+              <option>Esther Mollel</option>
+              <option>Rehema Tarimo</option>
+              <option>John Massawe</option>
+              <option>Neema Boniface</option>
+              <option selected>Not assigned</option>
+            </select></label
+          >
+        </div>
+        <div class="modal-foot">
+          <a href="#list" class="btn">Cancel</a
+          ><button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div>
+    <div
+      class="modal"
+      id="delete-b6"
+      role="dialog"
+      aria-label="Delete Computer studies?"
+    >
+      <a class="modal-bg" href="#list" aria-label="Close"></a>
+      <form class="modal-box small" action="/subjects/6/delete" method="post">
+        <div class="modal-head">
+          <div><h2>Delete Computer studies?</h2></div>
+          <a class="close" href="#list" aria-label="Close">&times;</a>
+        </div>
+        <p>This removes the record permanently. This cannot be undone.</p>
+        <div class="warning-box">
+          Timetable periods and exam marks linked to this subject will lose
+          their subject. Consider marking it inactive instead.
+        </div>
+        <div class="modal-foot">
+          <a href="#list" class="btn">Cancel</a
+          ><button type="submit" class="btn btn-danger-solid">Delete</button>
+        </div>
+      </form>
+    </div>
+    <div class="modal" id="edit-b7" role="dialog" aria-label="Edit subject">
+      <a class="modal-bg" href="#list" aria-label="Close"></a>
+      <form class="modal-box" action="/subjects/7/edit" method="post">
+        <div class="modal-head">
+          <div>
+            <h2>Edit subject</h2>
+            <p>ART-P</p>
+          </div>
+          <a class="close" href="#list" aria-label="Close">&times;</a>
+        </div>
+        <div class="form-grid">
+          <label
+            >Subject code *<input
+              type="text"
+              name="code"
+              value="ART-P"
+              required /></label
+          ><label
+            >Subject name *<input
+              type="text"
+              name="name"
+              value="Art and craft"
+              required /></label
+          ><label
+            >Level<select name="level">
+              <option>Pre-primary</option>
+              <option selected>Primary</option>
+              <option>Secondary</option>
+            </select></label
+          ><label
+            >Department<input type="text" name="dept" value="Arts" /></label
+          ><label
+            >Type<select name="type">
+              <option>Core</option>
+              <option selected>Elective</option>
+            </select></label
+          ><label
+            >Periods per week<input
+              type="number"
+              name="periods"
+              value="2" /></label
+          ><label class="full"
+            >Teacher<select name="teacher">
+              <option>Salma Hassan</option>
+              <option>Hassan Mrope</option>
+              <option>Esther Mollel</option>
+              <option>Rehema Tarimo</option>
+              <option>John Massawe</option>
+              <option selected>Neema Boniface</option>
+              <option>Not assigned</option>
+            </select></label
+          >
+        </div>
+        <div class="modal-foot">
+          <a href="#list" class="btn">Cancel</a
+          ><button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div>
+    <div
+      class="modal"
+      id="delete-b7"
+      role="dialog"
+      aria-label="Delete Art and craft?"
+    >
+      <a class="modal-bg" href="#list" aria-label="Close"></a>
+      <form class="modal-box small" action="/subjects/7/delete" method="post">
+        <div class="modal-head">
+          <div><h2>Delete Art and craft?</h2></div>
+          <a class="close" href="#list" aria-label="Close">&times;</a>
+        </div>
+        <p>This removes the record permanently. This cannot be undone.</p>
+        <div class="warning-box">
+          Timetable periods and exam marks linked to this subject will lose
+          their subject. Consider marking it inactive instead.
+        </div>
+        <div class="modal-foot">
+          <a href="#list" class="btn">Cancel</a
+          ><button type="submit" class="btn btn-danger-solid">Delete</button>
+        </div>
+      </form>
+    </div>
+    <div
+      class="modal"
+      id="add-subject"
+      role="dialog"
+      aria-label="Add new subject"
+    >
+      <a class="modal-bg" href="#list" aria-label="Close"></a>
+      <form class="modal-box" action="{% url "subjects" %}" method="post">
+        {% csrf_token %}
+        <div class="modal-head">
+          <div>
+            <h2>Add new subject</h2>
+            <p>Fields marked * are required.</p>
+          </div>
+          <a class="close" href="#list" aria-label="Close">&times;</a>
+        </div>
+        <div class="form-grid">
+          <label
+            >Subject code *<input
+              type="text"
+              name="subject_code"
+              value=""
+              required /></label
+          ><label
+            >Subject name *<input
+              type="text"
+              name="subject_name"
+              value=""
+              required /></label
+          ><label
+            >Level<select name="level">
+              <option>Pre-primary</option>
+              <option>Primary</option>
+              <option>Secondary</option>
+            </select></label
+          ><label>Department<input type="text" name="department" value="" /></label
+          ><label
+            >Type<select name="subject_type">
+              <option>Core</option>
+              <option>Elective</option>
+            </select></label
+          ><label
+            >Periods per week<input
+              type="number"
+              name="periods_per_week"
+              value="" /></label
+          ><label class="full"
+            >Teacher<select name="teacher_assigned">
+              <option>Salma Hassan</option>
+              <option>Hassan Mrope</option>
+              <option>Esther Mollel</option>
+              <option>Rehema Tarimo</option>
+              <option>John Massawe</option>
+              <option>Neema Boniface</option>
+              <option selected>Not assigned</option>
+            </select></label
+          ><label class="full"
+            >Description<textarea name="description"></textarea>
+          </label>
+        </div>
+        <div class="modal-foot">
+          <a href="#list" class="btn">Cancel</a
+          ><button type="submit" class="btn btn-primary">Save subject</button>
+        </div>
+      </form>
+    </div>
+{% endblock main %}

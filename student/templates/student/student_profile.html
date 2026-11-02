@@ -1,0 +1,456 @@
+{% extends "student/student_logged_in.html" %}
+{% load static %}
+{% block title %}student profile{% endblock title %}
+{% block styles %}
+<link rel="stylesheet" href="{% static "student/student_profile.css" %}">
+{% endblock styles %}
+{% block main %}
+
+<main class="content">
+
+  <div class="page-head">
+    <div>
+      <h1>My profile {{request.user.student.first_name}}</h1>
+      <p><a href="student-dashboard.html" style="text-decoration:underline">My dashboard</a> / My profile</p>
+    </div>
+    <div class="btn-row">
+      <a href="{% url "student_logged_in" %}" class="btn">Back to dashboard</a>
+    </div>
+  </div>
+
+  <!-- After saving, your backend can show this message:
+        <div class="alert-ok" role="status">Your profile was saved.</div> -->
+
+  <div class="profile-layout">
+
+    <!-- ================= Left: summary ================= -->
+    <aside class="card side-card" aria-label="Profile summary">
+      <div>
+        <!-- If the student has a photo, use: <div class="photo"><img src="/uploads/photos/ST-2026-0519.jpg" alt="Zawadi Komba"></div> -->
+        <div class="photo" aria-hidden="true">ZK</div>
+      </div>
+      <div>
+        <h2>Zawadi Komba</h2>
+        <p>ST-2026-0519 · Form 2 B</p>
+        <p><span class="badge b-ok">Active student</span></p>
+      </div>
+      <label style="text-align:left;font-size:13px;font-weight:600">Profile photo
+        <input type="file" name="photo" form="profile-form" accept="image/png, image/jpeg">
+        <span class="hint">JPG or PNG, up to 2 MB. Use a clear photo of your face.</span>
+      </label>
+
+      <div class="complete">
+        <div class="top"><span>Profile completeness</span><b>85%</b></div>
+        <div class="track"><i style="width:85%"></i></div>
+        <small>Add your blood group and a second guardian to reach 100%.</small>
+      </div>
+
+      <dl class="info">
+        <div><dt>Class</dt><dd>Form 2 B</dd></div>
+        <div><dt>Admitted</dt><dd>11 Jan 2023</dd></div>
+        <div><dt>Class teacher</dt><dd>Ms. Mollel</dd></div>
+        <div><dt>Boarding</dt><dd>Day student</dd></div>
+      </dl>
+
+      <p class="notice" style="text-align:left">To change your class, admission number or name on your certificates, ask your class teacher or the school office.</p>
+    </aside>
+
+    <!-- ================= Right: forms ================= -->
+    <div class="stack">
+
+      <div class="stack" id="profile-form">
+
+        <p class="notice">Fields marked * are required. Your changes are saved to your school record when you press Save changes.</p>
+
+
+        <form class="stack" id="profile-form" action="{% url "student_him_self" request.user.id %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+        <section class="card">
+          <div class="card-head"><h2>Personal details</h2></div>
+          <div class="form-grid">
+            <label>First name *<input name="first_name" value="{{request.user.student.first_name}}" required autocomplete="given-name"></label>
+            <label>Last name *<input name="last_name" value="{{request.user.student.last_name}}" required autocomplete="family-name"></label>
+            <label>Gender *
+              <select name="gender" required>
+                <option value="">{{request.user.student.gender}}</option><option selected>Female</option><option>Male</option>
+              </select>
+            </label>
+            <label>Date of birth *<input type="date" name="date_of_birth" value="{{request.user.student.date_of_birth|date:'Y-m-d'}}" required autocomplete="bday"></label>
+            <label>Place of birth<input name="home_address" value="{{request.user.student.home_address}}"></label>
+            <label>student_class<input name="student_class" value="{{request.user.student.student_class}}"></label>
+            <label>section<input name="section" value="{{request.user.student.section}}"></label>
+            <label>admission_date<input type="date" name="admission_date" value="{{request.user.student.admission_date|date:'Y-m-d'}}"></label>
+            <label>photo<input type="file" name="photo" value="{{request.user.student.section}}"></label>
+            <label>blood_group<input name="blood_group" value="{{request.user.student.blood_group}}"></label>
+            <label>allergies<input name="allergies" value="{{request.user.student.allergies}}"></label>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </section>
+        </form>
+
+        <section class="card">
+          <div class="card-head"><h2>Contact and address</h2></div>
+          <div class="form-grid">
+            <label>My phone number<input type="tel" name="phone" value="" placeholder="+255 7xx xxx xxx" pattern="\+?[0-9 ]{9,15}" autocomplete="tel"><span class="hint">Optional. Leave empty if you do not have a phone.</span></label>
+            <label>My email<input type="email" name="email" value="zawadi.k@student.example" autocomplete="email"></label>
+            <label>Region *<input name="region" value="Dar es Salaam" required></label>
+            <label>District *<input name="district" value="Kigamboni" required></label>
+            <label>Ward or street<input name="ward" value="Kigamboni, Mji Mwema"></label>
+            <label>House or plot number<input name="house" value=""></label>
+            <label class="full">Home address<textarea name="address">Mji Mwema, near the market</textarea></label>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-head"><h2>Parent or guardian</h2></div>
+          <div class="form-grid">
+            <label>Primary guardian name *<input name="guardian1_name" value="Anna Komba" required></label>
+            <label>Relationship *
+              <select name="guardian1_relation" required>
+                <option value="">Choose</option><option selected>Mother</option><option>Father</option><option>Guardian</option><option>Other relative</option>
+              </select>
+            </label>
+            <label>Phone number *<input type="tel" name="guardian1_phone" value="+255 622 000 519" required pattern="\+?[0-9 ]{9,15}"></label>
+            <label>Email<input type="email" name="guardian1_email" value="a.komba@example.com"></label>
+            <label>Occupation<input name="guardian1_job" value="Nurse"></label>
+            <label>Workplace<input name="guardian1_work" value="Temeke Hospital"></label>
+            <label>Second guardian name<input name="guardian2_name" value=""></label>
+            <label>Second guardian phone<input type="tel" name="guardian2_phone" value="" placeholder="+255 7xx xxx xxx" pattern="\+?[0-9 ]{9,15}"></label>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-head"><h2>Emergency contact</h2><span>Someone we can call if your guardian cannot be reached</span></div>
+          <div class="form-grid">
+            <label>Full name *<input name="emergency_name" value="Grace Komba" required></label>
+            <label>Relationship *<input name="emergency_relation" value="Aunt" required></label>
+            <label>Phone number *<input type="tel" name="emergency_phone" value="+255 754 000 880" required pattern="\+?[0-9 ]{9,15}"></label>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-head"><h2>Health information</h2><span>Seen only by the school nurse and your class teacher</span></div>
+          <div class="form-grid">
+            <label>Blood group
+              <select name="blood_group">
+                <option value="" selected>I do not know</option><option>A</option><option>B</option><option>AB</option><option>O</option>
+              </select>
+            </label>
+            <label>Allergies<input name="allergies" value="Peanuts"></label>
+            <label>Medical conditions<input name="conditions" value=""></label>
+            <label>Medicine taken regularly<input name="medication" value=""></label>
+            <label class="full">Health notes for the school nurse<textarea name="health_notes">Carries an allergy card. Needs a peanut-free lunch.</textarea></label>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-head"><h2>About me and notifications</h2></div>
+          <p class="form-section" style="margin-top:0">Clubs and activities</p>
+          <div class="checks" style="margin-bottom:18px">
+            <label><input type="checkbox" name="clubs" value="science" checked> Science club</label>
+            <label><input type="checkbox" name="clubs" value="debate"> Debate</label>
+            <label><input type="checkbox" name="clubs" value="football"> Football</label>
+            <label><input type="checkbox" name="clubs" value="music" checked> Music</label>
+            <label><input type="checkbox" name="clubs" value="art"> Art</label>
+          </div>
+          <div class="form-grid">
+            <label class="full">About me<textarea name="about" placeholder="Tell us about your interests and what you want to become">I enjoy biology and singing in the school choir. I want to become a doctor.</textarea></label>
+          </div>
+          <p class="form-section">Send me notifications about</p>
+          <div class="checks">
+            <label><input type="checkbox" name="notify" value="assignments" checked> New assignments</label>
+            <label><input type="checkbox" name="notify" value="results" checked> Exam results</label>
+            <label><input type="checkbox" name="notify" value="fees"> Fee reminders</label>
+            <label><input type="checkbox" name="notify" value="notices" checked> School notices</label>
+          </div>
+        </section>
+
+        <div class="save-bar">
+          <span>Remember to save before you leave this page.</span>
+          <div class="btn-row">
+            <button type="reset" class="btn">Undo changes</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= Password: separate form ================= -->
+      <form class="card" id="password" action="/student/password/change" method="post">
+        <div class="card-head"><h2>Change password</h2><span>Use at least 8 characters</span></div>
+        <div class="form-grid">
+          <label class="full">Current password *<input type="password" name="current_password" required autocomplete="current-password"></label>
+          <label>New password *<input type="password" name="new_password" required minlength="8" autocomplete="new-password"></label>
+          <label>Confirm new password *<input type="password" name="confirm_password" required minlength="8" autocomplete="new-password"></label>
+        </div>
+        <div class="modal-foot"><button type="submit" class="btn btn-primary">Update password</button></div>
+      </form>
+
+    </div>
+  </div>
+
+</main>
+
+{% endblock main %}
+
+
+{% comment %} <!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title> {% block title %}My profile | Sunrise Academy student portal{% endblock title %} </title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="{% static "account/general.css" %}">
+<link rel="stylesheet" href="{% static "account/components.css" %}">
+
+</head>
+<body>
+
+<input type="checkbox" id="menu-toggle" class="menu-toggle" aria-label="Open navigation menu">
+
+<div class="app">
+
+  <aside class="sidebar">
+    <a class="brand" href="{% url "student_logged_in" %}">
+      <div class="brand-mark">S</div>
+      <div><strong>Sunrise Academy</strong><span>Student portal</span></div>
+    </a>
+
+    <nav aria-label="Main">
+      <div class="nav-group">
+        <h3>Overview</h3>
+        <ul>
+          <li><a href="{% url "student_logged_in" %}">My dashboard</a></li>
+          <li><a href="#">Notices <span class="nav-count">3</span></a></li>
+        </ul>
+      </div>
+      <br>
+      <div class="nav-group">
+        <h3>Learning</h3>
+        <ul>
+          <li><a href="#">My timetable</a></li>
+          <li><a href="#">Assignments <span class="nav-count">2</span></a></li>
+          <li><a href="#">Results and report cards</a></li>
+          <li><a href="#">Exam schedule</a></li>
+          <li><a href="#">Library</a></li>
+        </ul>
+      </div>
+      <br>
+      <div class="nav-group">
+        <h3>My records</h3>
+        <ul>
+          <li><a href="#">Attendance</a></li>
+          <li><a href="#">Fees and payments</a></li>
+          <li><a href="#">Leave requests</a></li>
+          <li><a href="{% url "student_profile" %}" aria-current="page">My profile</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <a class="sidebar-foot" href="student-profile.html"><b>Zawadi Komba</b>ST-2026-0519 · Form 2 B</a>
+  </aside>
+
+  <div class="main">
+
+    <header class="topbar">
+      <label for="menu-toggle" class="menu-btn" aria-label="Toggle menu">&#9776;</label>
+      <div class="search"><input type="search" placeholder="Search subjects, assignments, notices" aria-label="Search"></div>
+      <div class="top-actions">
+        <span class="term-chip">Term 2, 2026</span>
+        <a class="avatar" href="student-profile.html" title="My profile">ZK</a>
+        <a href="#" class="btn">Sign out</a>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <div class="page-head">
+        <div>
+          <h1>My profile {{request.user.student.first_name}}</h1>
+          <p><a href="student-dashboard.html" style="text-decoration:underline">My dashboard</a> / My profile</p>
+        </div>
+        <div class="btn-row">
+          <a href="{% url "student_logged_in" %}" class="btn">Back to dashboard</a>
+        </div>
+      </div>
+
+      <!-- After saving, your backend can show this message:
+           <div class="alert-ok" role="status">Your profile was saved.</div> -->
+
+      <div class="profile-layout">
+
+        <!-- ================= Left: summary ================= -->
+        <aside class="card side-card" aria-label="Profile summary">
+          <div>
+            <!-- If the student has a photo, use: <div class="photo"><img src="/uploads/photos/ST-2026-0519.jpg" alt="Zawadi Komba"></div> -->
+            <div class="photo" aria-hidden="true">ZK</div>
+          </div>
+          <div>
+            <h2>Zawadi Komba</h2>
+            <p>ST-2026-0519 · Form 2 B</p>
+            <p><span class="badge b-ok">Active student</span></p>
+          </div>
+          <label style="text-align:left;font-size:13px;font-weight:600">Profile photo
+            <input type="file" name="photo" form="profile-form" accept="image/png, image/jpeg">
+            <span class="hint">JPG or PNG, up to 2 MB. Use a clear photo of your face.</span>
+          </label>
+
+          <div class="complete">
+            <div class="top"><span>Profile completeness</span><b>85%</b></div>
+            <div class="track"><i style="width:85%"></i></div>
+            <small>Add your blood group and a second guardian to reach 100%.</small>
+          </div>
+
+          <dl class="info">
+            <div><dt>Class</dt><dd>Form 2 B</dd></div>
+            <div><dt>Admitted</dt><dd>11 Jan 2023</dd></div>
+            <div><dt>Class teacher</dt><dd>Ms. Mollel</dd></div>
+            <div><dt>Boarding</dt><dd>Day student</dd></div>
+          </dl>
+
+          <p class="notice" style="text-align:left">To change your class, admission number or name on your certificates, ask your class teacher or the school office.</p>
+        </aside>
+
+        <!-- ================= Right: forms ================= -->
+        <div class="stack">
+
+          <div class="stack" id="profile-form">
+
+            <p class="notice">Fields marked * are required. Your changes are saved to your school record when you press Save changes.</p>
+
+
+            <form class="stack" id="profile-form" action="{% url "student_him_self" request.user.id %}" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+            <section class="card">
+              <div class="card-head"><h2>Personal details</h2></div>
+              <div class="form-grid">
+                <label>First name *<input name="first_name" value="{{request.user.student.first_name}}" required autocomplete="given-name"></label>
+                <label>Last name *<input name="last_name" value="{{request.user.student.last_name}}" required autocomplete="family-name"></label>
+                <label>Gender *
+                  <select name="gender" required>
+                    <option value="">{{request.user.student.gender}}</option><option selected>Female</option><option>Male</option>
+                  </select>
+                </label>
+                <label>Date of birth *<input type="date" name="date_of_birth" value="{{request.user.student.date_of_birth|date:'Y-m-d'}}" required autocomplete="bday"></label>
+                <label>Place of birth<input name="home_address" value="{{request.user.student.home_address}}"></label>
+                <label>student_class<input name="student_class" value="{{request.user.student.student_class}}"></label>
+                <label>section<input name="section" value="{{request.user.student.section}}"></label>
+                <label>admission_date<input type="date" name="admission_date" value="{{request.user.student.admission_date|date:'Y-m-d'}}"></label>
+                <label>photo<input type="file" name="photo" value="{{request.user.student.section}}"></label>
+                <label>blood_group<input name="blood_group" value="{{request.user.student.blood_group}}"></label>
+                <label>allergies<input name="allergies" value="{{request.user.student.allergies}}"></label>
+                <button type="submit" class="btn btn-primary">Save</button>
+              </div>
+            </section>
+            </form>
+
+            <section class="card">
+              <div class="card-head"><h2>Contact and address</h2></div>
+              <div class="form-grid">
+                <label>My phone number<input type="tel" name="phone" value="" placeholder="+255 7xx xxx xxx" pattern="\+?[0-9 ]{9,15}" autocomplete="tel"><span class="hint">Optional. Leave empty if you do not have a phone.</span></label>
+                <label>My email<input type="email" name="email" value="zawadi.k@student.example" autocomplete="email"></label>
+                <label>Region *<input name="region" value="Dar es Salaam" required></label>
+                <label>District *<input name="district" value="Kigamboni" required></label>
+                <label>Ward or street<input name="ward" value="Kigamboni, Mji Mwema"></label>
+                <label>House or plot number<input name="house" value=""></label>
+                <label class="full">Home address<textarea name="address">Mji Mwema, near the market</textarea></label>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card-head"><h2>Parent or guardian</h2></div>
+              <div class="form-grid">
+                <label>Primary guardian name *<input name="guardian1_name" value="Anna Komba" required></label>
+                <label>Relationship *
+                  <select name="guardian1_relation" required>
+                    <option value="">Choose</option><option selected>Mother</option><option>Father</option><option>Guardian</option><option>Other relative</option>
+                  </select>
+                </label>
+                <label>Phone number *<input type="tel" name="guardian1_phone" value="+255 622 000 519" required pattern="\+?[0-9 ]{9,15}"></label>
+                <label>Email<input type="email" name="guardian1_email" value="a.komba@example.com"></label>
+                <label>Occupation<input name="guardian1_job" value="Nurse"></label>
+                <label>Workplace<input name="guardian1_work" value="Temeke Hospital"></label>
+                <label>Second guardian name<input name="guardian2_name" value=""></label>
+                <label>Second guardian phone<input type="tel" name="guardian2_phone" value="" placeholder="+255 7xx xxx xxx" pattern="\+?[0-9 ]{9,15}"></label>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card-head"><h2>Emergency contact</h2><span>Someone we can call if your guardian cannot be reached</span></div>
+              <div class="form-grid">
+                <label>Full name *<input name="emergency_name" value="Grace Komba" required></label>
+                <label>Relationship *<input name="emergency_relation" value="Aunt" required></label>
+                <label>Phone number *<input type="tel" name="emergency_phone" value="+255 754 000 880" required pattern="\+?[0-9 ]{9,15}"></label>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card-head"><h2>Health information</h2><span>Seen only by the school nurse and your class teacher</span></div>
+              <div class="form-grid">
+                <label>Blood group
+                  <select name="blood_group">
+                    <option value="" selected>I do not know</option><option>A</option><option>B</option><option>AB</option><option>O</option>
+                  </select>
+                </label>
+                <label>Allergies<input name="allergies" value="Peanuts"></label>
+                <label>Medical conditions<input name="conditions" value=""></label>
+                <label>Medicine taken regularly<input name="medication" value=""></label>
+                <label class="full">Health notes for the school nurse<textarea name="health_notes">Carries an allergy card. Needs a peanut-free lunch.</textarea></label>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card-head"><h2>About me and notifications</h2></div>
+              <p class="form-section" style="margin-top:0">Clubs and activities</p>
+              <div class="checks" style="margin-bottom:18px">
+                <label><input type="checkbox" name="clubs" value="science" checked> Science club</label>
+                <label><input type="checkbox" name="clubs" value="debate"> Debate</label>
+                <label><input type="checkbox" name="clubs" value="football"> Football</label>
+                <label><input type="checkbox" name="clubs" value="music" checked> Music</label>
+                <label><input type="checkbox" name="clubs" value="art"> Art</label>
+              </div>
+              <div class="form-grid">
+                <label class="full">About me<textarea name="about" placeholder="Tell us about your interests and what you want to become">I enjoy biology and singing in the school choir. I want to become a doctor.</textarea></label>
+              </div>
+              <p class="form-section">Send me notifications about</p>
+              <div class="checks">
+                <label><input type="checkbox" name="notify" value="assignments" checked> New assignments</label>
+                <label><input type="checkbox" name="notify" value="results" checked> Exam results</label>
+                <label><input type="checkbox" name="notify" value="fees"> Fee reminders</label>
+                <label><input type="checkbox" name="notify" value="notices" checked> School notices</label>
+              </div>
+            </section>
+
+            <div class="save-bar">
+              <span>Remember to save before you leave this page.</span>
+              <div class="btn-row">
+                <button type="reset" class="btn">Undo changes</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= Password: separate form ================= -->
+          <form class="card" id="password" action="/student/password/change" method="post">
+            <div class="card-head"><h2>Change password</h2><span>Use at least 8 characters</span></div>
+            <div class="form-grid">
+              <label class="full">Current password *<input type="password" name="current_password" required autocomplete="current-password"></label>
+              <label>New password *<input type="password" name="new_password" required minlength="8" autocomplete="new-password"></label>
+              <label>Confirm new password *<input type="password" name="confirm_password" required minlength="8" autocomplete="new-password"></label>
+            </div>
+            <div class="modal-foot"><button type="submit" class="btn btn-primary">Update password</button></div>
+          </form>
+
+        </div>
+      </div>
+
+    </main>
+
+    <footer>Sunrise Academy student portal · Need help? Ask your class teacher or the school office.</footer>
+  </div>
+</div>
+
+</body>
+</html> {% endcomment %}

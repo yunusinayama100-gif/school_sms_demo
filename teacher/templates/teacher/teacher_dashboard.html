@@ -1,0 +1,1526 @@
+{% extends "account/admin.html" %}
+{% load static %}
+{% block title %}teacher dashboard{% endblock title %}
+{% block styles %}
+<link rel="stylesheet" href="{% static "account/components.css" %}">
+{% endblock styles %}
+
+{% block main %}
+<main class="content">
+  <div class="page-head">
+    <div>
+      <h1>Teachers</h1>
+      <p>
+        <a
+          href="superuser-dashboard.html"
+          style="text-decoration: underline"
+          >Dashboard</a
+        >
+        / Teachers
+      </p>
+    </div>
+    <div class="btn-row">
+      <a href="#" class="btn">Import from CSV</a
+      ><a href="#" class="btn">Export list</a
+      ><a href="#add-teacher" class="btn btn-primary">Add teacher</a>
+    </div>
+  </div>
+  <section class="stats" aria-label="Key numbers">
+    <article class="card stat">
+      <span class="label">All teachers</span
+      ><span class="value">74</span
+      ><span class="note">68 teaching today</span>
+    </article>
+    <article class="card stat">
+      <span class="label">On leave</span><span class="value">6</span
+      ><span class="note">2 returning next week</span>
+    </article>
+    <article class="card stat">
+      <span class="label">Average workload</span
+      ><span class="value">21</span
+      ><span class="note">Periods per week</span>
+    </article>
+    <article class="card stat">
+      <span class="label">Open positions</span
+      ><span class="value">2</span
+      ><span class="note">Computer studies, Art</span>
+    </article>
+  </section>
+  <section class="card" id="list">
+    <div class="card-head">
+      <h2>Teacher list</h2>
+      <span>Showing 6 of 74</span>
+    </div>
+    <form class="toolbar" action="teachers.html" method="get">
+      <label class="field grow"
+        >Search<input
+          type="search"
+          name="q"
+          placeholder="Name, ID or subject" /></label
+      ><label class="field"
+        >Department<select name="dept">
+          <option value="">All</option>
+          <option>Sciences</option>
+          <option>Languages</option>
+          <option>Humanities</option>
+          <option>Primary</option>
+        </select></label
+      ><label class="field"
+        >Status<select name="status">
+          <option value="">All</option>
+          <option>Active</option>
+          <option>On leave</option>
+          <option>Suspended</option>
+          <option>Resigned</option>
+        </select></label
+      ><button class="btn btn-primary" type="submit">
+        Apply filters</button
+      ><a class="btn" href="teachers.html">Clear</a>
+    </form>
+    <div class="bulk">
+      <span>Select rows to act on several at once.</span>
+      <div class="btn-row">
+        <a href="#" class="btn btn-sm">Send message</a
+        ><a href="#" class="btn btn-sm">Assign classes</a
+        ><a href="#" class="btn btn-sm">Export list</a>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox" aria-label="Select all teachers" />
+            </th>
+            <th>Teacher</th>
+            <th>ID</th>
+            <th>Subjects</th>
+            <th>Classes</th>
+            <th>Phone</th>
+            <th>Workload</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for teacher_info in teachers %}
+          <tr>
+            <td>
+              <input type="checkbox" aria-label="Select Salma Hassan" />
+            </td>
+            <td>
+              <div class="person">
+                <div class="avatar">{{teacher_info.full_name|first}}</div>
+                <div>
+                  {{teacher_info.full_name}}<small
+                    >{{teacher_info.email}}</small
+                  >
+                </div>
+              </div>
+            </td>
+            <td>{{teacher_info.work_detail.teacher_id}}</td>
+            <td>{{teacher_info.work_detail.subject_tought}}</td>
+            <td>{{teacher_info.work_detail.class_assigned}}</td>
+            <td>+{{teacher_info.phone_number}}</td>
+            <td>
+              22 periods
+              <div class="track" style="width: 90px; margin-top: 4px">
+                <i style="width: 73%"></i>
+              </div>
+            </td>
+            <td><span class="badge b-ok">Active</span></td>
+            <td>
+              <div class="row-actions">
+                <a href="#view-t{{teacher_info.id}}" class="btn btn-sm">View</a
+                ><a href="#add-teacher-{{teacher_info.id}}" class="btn btn-sm">Edit</a
+                ><a href="#delete-t{{teacher_info.id}}" class="btn btn-sm btn-danger"
+                  >Delete</a
+                >
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td>
+              <input type="checkbox" aria-label="Select Hassan Mrope" />
+            </td>
+            <td>
+              <div class="person">
+                <div class="avatar">HM</div>
+                <div>
+                  Hassan Mrope<small
+                    >hassan@sunriseacademy.example</small
+                  >
+                </div>
+              </div>
+            </td>
+            <td>TC-002</td>
+            <td>Mathematics, Physics</td>
+            <td>Form 2–4</td>
+            <td>+255 713 100 002</td>
+            <td>
+              24 periods
+              <div class="track" style="width: 90px; margin-top: 4px">
+                <i style="width: 80%"></i>
+              </div>
+            </td>
+            <td><span class="badge b-ok">Active</span></td>
+            <td>
+              <div class="row-actions">
+                <a href="#view-t2" class="btn btn-sm">View</a
+                ><a href="#edit-t2" class="btn btn-sm">Edit</a
+                ><a href="#delete-t2" class="btn btn-sm btn-danger"
+                  >Delete</a
+                >
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input
+                type="checkbox"
+                aria-label="Select Esther Mollel"
+              />
+            </td>
+            <td>
+              <div class="person">
+                <div class="avatar">EM</div>
+                <div>
+                  Esther Mollel<small
+                    >esther@sunriseacademy.example</small
+                  >
+                </div>
+              </div>
+            </td>
+            <td>TC-003</td>
+            <td>English, Literature</td>
+            <td>Form 1–2</td>
+            <td>+255 713 100 003</td>
+            <td>
+              20 periods
+              <div class="track" style="width: 90px; margin-top: 4px">
+                <i style="width: 67%"></i>
+              </div>
+            </td>
+            <td><span class="badge b-ok">Active</span></td>
+            <td>
+              <div class="row-actions">
+                <a href="#view-t3" class="btn btn-sm">View</a
+                ><a href="#edit-t3" class="btn btn-sm">Edit</a
+                ><a href="#delete-t3" class="btn btn-sm btn-danger"
+                  >Delete</a
+                >
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input
+                type="checkbox"
+                aria-label="Select Rehema Tarimo"
+              />
+            </td>
+            <td>
+              <div class="person">
+                <div class="avatar">RT</div>
+                <div>
+                  Rehema Tarimo<small
+                    >rehema@sunriseacademy.example</small
+                  >
+                </div>
+              </div>
+            </td>
+            <td>TC-004</td>
+            <td>Kiswahili</td>
+            <td>Standard 5–7</td>
+            <td>+255 713 100 004</td>
+            <td>
+              18 periods
+              <div class="track" style="width: 90px; margin-top: 4px">
+                <i style="width: 60%"></i>
+              </div>
+            </td>
+            <td><span class="badge b-wait">On leave</span></td>
+            <td>
+              <div class="row-actions">
+                <a href="#view-t4" class="btn btn-sm">View</a
+                ><a href="#edit-t4" class="btn btn-sm">Edit</a
+                ><a href="#delete-t4" class="btn btn-sm btn-danger"
+                  >Delete</a
+                >
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input type="checkbox" aria-label="Select John Massawe" />
+            </td>
+            <td>
+              <div class="person">
+                <div class="avatar">JM</div>
+                <div>
+                  John Massawe<small>john@sunriseacademy.example</small>
+                </div>
+              </div>
+            </td>
+            <td>TC-005</td>
+            <td>History, Civics</td>
+            <td>Form 2–4</td>
+            <td>+255 713 100 005</td>
+            <td>
+              21 periods
+              <div class="track" style="width: 90px; margin-top: 4px">
+                <i style="width: 70%"></i>
+              </div>
+            </td>
+            <td><span class="badge b-ok">Active</span></td>
+            <td>
+              <div class="row-actions">
+                <a href="#view-t5" class="btn btn-sm">View</a
+                ><a href="#edit-t5" class="btn btn-sm">Edit</a
+                ><a href="#delete-t5" class="btn btn-sm btn-danger"
+                  >Delete</a
+                >
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input
+                type="checkbox"
+                aria-label="Select Neema Boniface"
+              />
+            </td>
+            <td>
+              <div class="person">
+                <div class="avatar">NB</div>
+                <div>
+                  Neema Boniface<small
+                    >neema@sunriseacademy.example</small
+                  >
+                </div>
+              </div>
+            </td>
+            <td>TC-006</td>
+            <td>Mathematics, Art and craft</td>
+            <td>Standard 1–4</td>
+            <td>+255 713 100 006</td>
+            <td>
+              25 periods
+              <div class="track" style="width: 90px; margin-top: 4px">
+                <i style="width: 83%"></i>
+              </div>
+            </td>
+            <td><span class="badge b-ok">Active</span></td>
+            <td>
+              <div class="row-actions">
+                <a href="#view-t6" class="btn btn-sm">View</a
+                ><a href="#edit-t6" class="btn btn-sm">Edit</a
+                ><a href="#delete-t6" class="btn btn-sm btn-danger"
+                  >Delete</a
+                >
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pager">
+      <span>Page 1 of 13</span>
+      <nav aria-label="Pagination">
+        <a href="#list">Previous</a
+        ><a href="#list" aria-current="page">1</a><a href="#list">2</a
+        ><a href="#list">3</a><a href="#list">Next</a>
+      </nav>
+    </div>
+  </section>
+  <section class="grid-2">
+    <article class="card">
+      <div class="card-head">
+        <h2>Teachers by department</h2>
+        <a href="#">Manage departments</a>
+      </div>
+      <div class="meter">
+        <div class="meter-row">
+          <div class="top"><span>Sciences</span><b>19</b></div>
+          <div class="track"><i class="" style="width: 26%"></i></div>
+        </div>
+        <div class="meter-row">
+          <div class="top"><span>Languages</span><b>16</b></div>
+          <div class="track">
+            <i class="blue" style="width: 22%"></i>
+          </div>
+        </div>
+        <div class="meter-row">
+          <div class="top"><span>Humanities</span><b>14</b></div>
+          <div class="track">
+            <i class="red" style="width: 19%"></i>
+          </div>
+        </div>
+        <div class="meter-row">
+          <div class="top"><span>Primary</span><b>17</b></div>
+          <div class="track">
+            <i class="amber" style="width: 23%"></i>
+          </div>
+        </div>
+        <div class="meter-row">
+          <div class="top">
+            <span>Technology and arts</span><b>8</b>
+          </div>
+          <div class="track"><i class="" style="width: 11%"></i></div>
+        </div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="card-head">
+        <h2>Leave requests</h2>
+        <a href="#">See all</a>
+      </div>
+      <ul class="feed">
+        <li class="warn">
+          <div>
+            <p>
+              Rehema Tarimo requested 3 more days of leave from 22
+              October.
+            </p>
+            <small>Waiting for approval · 2 hours ago</small>
+          </div>
+        </li>
+        <li class="">
+          <div>
+            <p>John Massawe leave for 28 October was approved.</p>
+            <small>Approved yesterday</small>
+          </div>
+        </li>
+        <li class="warn">
+          <div>
+            <p>Salma Hassan requested a half day on 30 October.</p>
+            <small>Waiting for approval · Yesterday</small>
+          </div>
+        </li>
+      </ul>
+    </article>
+  </section>
+</main>
+
+{% for teacher_info in teachers %}
+<div class="modal" id="edit-t{{teacher_info.id}}" role="dialog" aria-label="Edit teacher">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box" action="{% url "edit_teacher" teacher_info.id %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="modal-head">
+      <div>
+        <h2>Edit teacher</h2>
+        <p>{{teacher_info.teacher_id}}</p>
+      </div>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <div class="form-grid">
+      <label
+        >Full name *<input
+          type="text"
+          name="full_name"
+          value="{{teacher_info.full_name}}"
+          required /></label
+      ><label
+        >Email<input
+          type="email"
+          name="email"
+          value="{{teacher_info.email}}" /></label
+      ><label
+        >Phone<input
+          type="tel"
+          name="phone_number"
+          value="+{{teacher_info.phone_number}}" /></label
+      ><label
+        >Subjects<input
+          type="text"
+          name="subject_tought"
+          value="{{teacher_info.work_detail.subject_tought}}" /></label
+      ><label
+        >Classes<input type="text" name="class_assigned" value="{{teacher_info.work_detail.class_assigned}}" /></label
+      ><label
+        >Qualification<input
+          type="text"
+          name="qualification"
+          value="{{teacher_info.work_detail.qualification}}" /></label
+      ><label
+        >Employed on<input
+          type="date"
+          name="employed_on"
+          value="{{teacher_info.work_detail.employed_on|date:"Y-m-d"}}" /></label
+      ><label
+        >Status<select name="status">
+          <option selected>Active</option>
+          <option>On leave</option>
+          <option>Suspended</option>
+          <option>Resigned</option>
+        </select></label
+      >
+    </div>
+    <div class="modal-foot">
+      <a href="#list" class="btn">Cancel</a
+      ><button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+  </form>
+</div>
+<div
+  class="modal"
+  id="delete-t{{teacher_info.id}}"
+  role="dialog"
+  aria-label="Delete Salma Hassan?"
+>
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box small" action="{% url "delete_teacher" teacher_info.id %}" method="post">
+    {% csrf_token %}
+    <div class="modal-head">
+      <div><h2>Delete {{teacher_info.full_name}}?</h2></div>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <p>This removes the record permanently. This cannot be undone.</p>
+    <div class="warning-box">
+      This teacher is assigned to 8 classes. Reassign their classes and
+      timetable periods first.
+    </div>
+    <div class="modal-foot">
+      <a href="#list" class="btn">Cancel</a
+      ><button type="submit" class="btn btn-danger-solid">Delete</button>
+    </div>
+  </form>
+</div>
+<div
+  class="modal"
+  id="view-t{{teacher_info.id}}"
+  role="dialog"
+  aria-label="Hassan Mrope details"
+>
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>Details</h2>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <div class="profile">
+      <div class="avatar">{{teacher_info.full_name|first}}</div>
+      <div>
+        <h3>{{teacher_info.full_name}}</h3>
+        <p>{{teacher_info.id}} · {{teacher_info.work_detail.subject_tought}}</p>
+      </div>
+      <span style="margin-left: auto"
+        ><span class="badge b-ok">Active</span></span
+      >
+    </div>
+    <dl class="info">
+      <div>
+        <dt>Teacher ID</dt>
+        <dd>{{teacher_info.id}}</dd>
+      </div>
+      <div>
+        <dt>Phone</dt>
+        <dd>+{{teacher_info.phone_number}}</dd>
+      </div>
+      <div>
+        <dt>Email</dt>
+        <dd>{{teacher_info.email}}</dd>
+      </div>
+      <div>
+        <dt>Subjects</dt>
+        <dd>{{teacher_info.work_detail.subject_tought}}</dd>
+      </div>
+      <div>
+        <dt>Classes</dt>
+        <dd>{{teacher_info.work_detail.class_assigned}}</dd>
+      </div>
+      <div>
+        <dt>Qualification</dt>
+        <dd>{{teacher_info.work_detail.qualification}}</dd>
+      </div>
+      <div>
+        <dt>Employed</dt>
+        <dd>{{teacher_info.work_detail.employed_on}}</dd>
+      </div>
+      <div>
+        <dt>Department</dt>
+        <dd>Sciences</dd>
+      </div>
+      <div>
+        <dt>Employment</dt>
+        <dd>{{teacher_info.work_detail.employment_type}}</dd>
+      </div>
+    </dl>
+    <p class="form-section">Summary</p>
+    <div class="mini-stats">
+      <div><b>24</b><span>Periods per week</span></div>
+      <div><b>100%</b><span>Attendance</span></div>
+      <div><b>9</b><span>Classes taught</span></div>
+    </div>
+
+    <div class="modal-foot">
+      <a href="timetable.html" class="btn">View timetable</a
+      ><a href="#" class="btn">Send message</a
+      ><a href="#edit-t{{teacher_info.id}}" class="btn btn-primary">Edit teacher</a>
+    </div>
+  </div>
+</div>
+{% endfor %}
+<div
+  class="modal"
+  id="view-t2"
+  role="dialog"
+  aria-label="Salma Hassan details"
+>
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>Details</h2>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <div class="profile">
+      <div class="avatar">SH</div>
+      <div>
+        <h3>Salma Hassan</h3>
+        <p>TC-001 · Sciences</p>
+      </div>
+      <span style="margin-left: auto"
+        ><span class="badge b-ok">Active</span></span
+      >
+    </div>
+    <dl class="info">
+      <div>
+        <dt>Teacher ID</dt>
+        <dd>TC-001</dd>
+      </div>
+      <div>
+        <dt>Phone</dt>
+        <dd>+255 713 100 001</dd>
+      </div>
+      <div>
+        <dt>Email</dt>
+        <dd>salma@sunriseacademy.example</dd>
+      </div>
+      <div>
+        <dt>Subjects</dt>
+        <dd>Biology, Chemistry</dd>
+      </div>
+      <div>
+        <dt>Classes</dt>
+        <dd>Form 1–4</dd>
+      </div>
+      <div>
+        <dt>Qualification</dt>
+        <dd>BSc Education (Chemistry)</dd>
+      </div>
+      <div>
+        <dt>Employed</dt>
+        <dd>5 February 2018</dd>
+      </div>
+      <div>
+        <dt>Department</dt>
+        <dd>Sciences</dd>
+      </div>
+      <div>
+        <dt>Employment</dt>
+        <dd>Full time</dd>
+      </div>
+    </dl>
+    <p class="form-section">Summary</p>
+    <div class="mini-stats">
+      <div><b>22</b><span>Periods per week</span></div>
+      <div><b>97%</b><span>Attendance</span></div>
+      <div><b>8</b><span>Classes taught</span></div>
+    </div>
+
+    <div class="modal-foot">
+      <a href="timetable.html" class="btn">View timetable</a
+      ><a href="#" class="btn">Send message</a
+      ><a href="#edit-t1" class="btn btn-primary">Edit teacher</a>
+    </div>
+  </div>
+</div>
+<div class="modal" id="edit-t2" role="dialog" aria-label="Edit teacher">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box" action="/teachers/2/edit" method="post">
+    <div class="modal-head">
+      <div>
+        <h2>Edit teacher</h2>
+        <p>TC-002</p>
+      </div>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <div class="form-grid">
+      <label
+        >Full name *<input
+          type="text"
+          name="name"
+          value="Hassan Mrope"
+          required /></label
+      ><label
+        >Email<input
+          type="email"
+          name="email"
+          value="hassan@sunriseacademy.example" /></label
+      ><label
+        >Phone<input
+          type="tel"
+          name="phone"
+          value="+255 713 100 002" /></label
+      ><label
+        >Subjects<input
+          type="text"
+          name="subjects"
+          value="Mathematics, Physics" /></label
+      ><label
+        >Classes<input type="text" name="classes" value="Form 2–4" /></label
+      ><label
+        >Qualification<input
+          type="text"
+          name="qualification"
+          value="BSc Education (Mathematics)" /></label
+      ><label
+        >Employed on<input
+          type="date"
+          name="employed"
+          value="2026-09-01" /></label
+      ><label
+        >Status<select name="status">
+          <option selected>Active</option>
+          <option>On leave</option>
+          <option>Suspended</option>
+          <option>Resigned</option>
+        </select></label
+      >
+    </div>
+    <div class="modal-foot">
+      <a href="#list" class="btn">Cancel</a
+      ><button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+  </form>
+</div>
+<div
+  class="modal"
+  id="delete-t2"
+  role="dialog"
+  aria-label="Delete Hassan Mrope?"
+>
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box small" action="/teachers/2/delete" method="post">
+    <div class="modal-head">
+      <div><h2>Delete Hassan Mrope?</h2></div>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <p>This removes the record permanently. This cannot be undone.</p>
+    <div class="warning-box">
+      This teacher is assigned to 9 classes. Reassign their classes and
+      timetable periods first.
+    </div>
+    <div class="modal-foot">
+      <a href="#list" class="btn">Cancel</a
+      ><button type="submit" class="btn btn-danger-solid">Delete</button>
+    </div>
+  </form>
+</div>
+<div
+  class="modal"
+  id="view-t3"
+  role="dialog"
+  aria-label="Esther Mollel details"
+>
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>Details</h2>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <div class="profile">
+      <div class="avatar">EM</div>
+      <div>
+        <h3>Esther Mollel</h3>
+        <p>TC-003 · Languages</p>
+      </div>
+      <span style="margin-left: auto"
+        ><span class="badge b-ok">Active</span></span
+      >
+    </div>
+    <dl class="info">
+      <div>
+        <dt>Teacher ID</dt>
+        <dd>TC-003</dd>
+      </div>
+      <div>
+        <dt>Phone</dt>
+        <dd>+255 713 100 003</dd>
+      </div>
+      <div>
+        <dt>Email</dt>
+        <dd>esther@sunriseacademy.example</dd>
+      </div>
+      <div>
+        <dt>Subjects</dt>
+        <dd>English, Literature</dd>
+      </div>
+      <div>
+        <dt>Classes</dt>
+        <dd>Form 1–2</dd>
+      </div>
+      <div>
+        <dt>Qualification</dt>
+        <dd>BA Education (English)</dd>
+      </div>
+      <div>
+        <dt>Employed</dt>
+        <dd>8 January 2020</dd>
+      </div>
+      <div>
+        <dt>Department</dt>
+        <dd>Languages</dd>
+      </div>
+      <div>
+        <dt>Employment</dt>
+        <dd>Full time</dd>
+      </div>
+    </dl>
+    <p class="form-section">Summary</p>
+    <div class="mini-stats">
+      <div><b>20</b><span>Periods per week</span></div>
+      <div><b>95%</b><span>Attendance</span></div>
+      <div><b>6</b><span>Classes taught</span></div>
+    </div>
+
+    <div class="modal-foot">
+      <a href="timetable.html" class="btn">View timetable</a
+      ><a href="#" class="btn">Send message</a
+      ><a href="#edit-t3" class="btn btn-primary">Edit teacher</a>
+    </div>
+  </div>
+</div>
+<div class="modal" id="edit-t3" role="dialog" aria-label="Edit teacher">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box" action="/teachers/3/edit" method="post">
+    <div class="modal-head">
+      <div>
+        <h2>Edit teacher</h2>
+        <p>TC-003</p>
+      </div>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <div class="form-grid">
+      <label
+        >Full name *<input
+          type="text"
+          name="name"
+          value="Esther Mollel"
+          required /></label
+      ><label
+        >Email<input
+          type="email"
+          name="email"
+          value="esther@sunriseacademy.example" /></label
+      ><label
+        >Phone<input
+          type="tel"
+          name="phone"
+          value="+255 713 100 003" /></label
+      ><label
+        >Subjects<input
+          type="text"
+          name="subjects"
+          value="English, Literature" /></label
+      ><label
+        >Classes<input type="text" name="classes" value="Form 1–2" /></label
+      ><label
+        >Qualification<input
+          type="text"
+          name="qualification"
+          value="BA Education (English)" /></label
+      ><label
+        >Employed on<input
+          type="date"
+          name="employed"
+          value="2020-01-08" /></label
+      ><label
+        >Status<select name="status">
+          <option selected>Active</option>
+          <option>On leave</option>
+          <option>Suspended</option>
+          <option>Resigned</option>
+        </select></label
+      >
+    </div>
+    <div class="modal-foot">
+      <a href="#list" class="btn">Cancel</a
+      ><button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+  </form>
+</div>
+<div
+  class="modal"
+  id="delete-t3"
+  role="dialog"
+  aria-label="Delete Esther Mollel?"
+>
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box small" action="/teachers/3/delete" method="post">
+    <div class="modal-head">
+      <div><h2>Delete Esther Mollel?</h2></div>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <p>This removes the record permanently. This cannot be undone.</p>
+    <div class="warning-box">
+      This teacher is assigned to 6 classes. Reassign their classes and
+      timetable periods first.
+    </div>
+    <div class="modal-foot">
+      <a href="#list" class="btn">Cancel</a
+      ><button type="submit" class="btn btn-danger-solid">Delete</button>
+    </div>
+  </form>
+</div>
+<div
+  class="modal"
+  id="view-t4"
+  role="dialog"
+  aria-label="Rehema Tarimo details"
+>
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>Details</h2>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <div class="profile">
+      <div class="avatar">RT</div>
+      <div>
+        <h3>Rehema Tarimo</h3>
+        <p>TC-004 · Languages</p>
+      </div>
+      <span style="margin-left: auto"
+        ><span class="badge b-wait">On leave</span></span
+      >
+    </div>
+    <dl class="info">
+      <div>
+        <dt>Teacher ID</dt>
+        <dd>TC-004</dd>
+      </div>
+      <div>
+        <dt>Phone</dt>
+        <dd>+255 713 100 004</dd>
+      </div>
+      <div>
+        <dt>Email</dt>
+        <dd>rehema@sunriseacademy.example</dd>
+      </div>
+      <div>
+        <dt>Subjects</dt>
+        <dd>Kiswahili</dd>
+      </div>
+      <div>
+        <dt>Classes</dt>
+        <dd>Standard 5–7</dd>
+      </div>
+      <div>
+        <dt>Qualification</dt>
+        <dd>BA Education (Kiswahili)</dd>
+      </div>
+      <div>
+        <dt>Employed</dt>
+        <dd>3 March 2017</dd>
+      </div>
+      <div>
+        <dt>Department</dt>
+        <dd>Languages</dd>
+      </div>
+      <div>
+        <dt>Employment</dt>
+        <dd>Full time</dd>
+      </div>
+    </dl>
+    <p class="form-section">Summary</p>
+    <div class="mini-stats">
+      <div><b>18</b><span>Periods per week</span></div>
+      <div><b>88%</b><span>Attendance</span></div>
+      <div><b>5</b><span>Classes taught</span></div>
+    </div>
+
+    <div class="modal-foot">
+      <a href="timetable.html" class="btn">View timetable</a
+      ><a href="#" class="btn">Send message</a
+      ><a href="#edit-t4" class="btn btn-primary">Edit teacher</a>
+    </div>
+  </div>
+</div>
+<div class="modal" id="edit-t4" role="dialog" aria-label="Edit teacher">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box" action="/teachers/4/edit" method="post">
+    <div class="modal-head">
+      <div>
+        <h2>Edit teacher</h2>
+        <p>TC-004</p>
+      </div>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <div class="form-grid">
+      <label
+        >Full name *<input
+          type="text"
+          name="name"
+          value="Rehema Tarimo"
+          required /></label
+      ><label
+        >Email<input
+          type="email"
+          name="email"
+          value="rehema@sunriseacademy.example" /></label
+      ><label
+        >Phone<input
+          type="tel"
+          name="phone"
+          value="+255 713 100 004" /></label
+      ><label
+        >Subjects<input
+          type="text"
+          name="subjects"
+          value="Kiswahili" /></label
+      ><label
+        >Classes<input
+          type="text"
+          name="classes"
+          value="Standard 5–7" /></label
+      ><label
+        >Qualification<input
+          type="text"
+          name="qualification"
+          value="BA Education (Kiswahili)" /></label
+      ><label
+        >Employed on<input
+          type="date"
+          name="employed"
+          value="2017-03-03" /></label
+      ><label
+        >Status<select name="status">
+          <option>Active</option>
+          <option selected>On leave</option>
+          <option>Suspended</option>
+          <option>Resigned</option>
+        </select></label
+      >
+    </div>
+    <div class="modal-foot">
+      <a href="#list" class="btn">Cancel</a
+      ><button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+  </form>
+</div>
+<div
+  class="modal"
+  id="delete-t4"
+  role="dialog"
+  aria-label="Delete Rehema Tarimo?"
+>
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box small" action="/teachers/4/delete" method="post">
+    <div class="modal-head">
+      <div><h2>Delete Rehema Tarimo?</h2></div>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <p>This removes the record permanently. This cannot be undone.</p>
+    <div class="warning-box">
+      This teacher is assigned to 5 classes. Reassign their classes and
+      timetable periods first.
+    </div>
+    <div class="modal-foot">
+      <a href="#list" class="btn">Cancel</a
+      ><button type="submit" class="btn btn-danger-solid">Delete</button>
+    </div>
+  </form>
+</div>
+<div
+  class="modal"
+  id="view-t5"
+  role="dialog"
+  aria-label="John Massawe details"
+>
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>Details</h2>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <div class="profile">
+      <div class="avatar">JM</div>
+      <div>
+        <h3>John Massawe</h3>
+        <p>TC-005 · Humanities</p>
+      </div>
+      <span style="margin-left: auto"
+        ><span class="badge b-ok">Active</span></span
+      >
+    </div>
+    <dl class="info">
+      <div>
+        <dt>Teacher ID</dt>
+        <dd>TC-005</dd>
+      </div>
+      <div>
+        <dt>Phone</dt>
+        <dd>+255 713 100 005</dd>
+      </div>
+      <div>
+        <dt>Email</dt>
+        <dd>john@sunriseacademy.example</dd>
+      </div>
+      <div>
+        <dt>Subjects</dt>
+        <dd>History, Civics</dd>
+      </div>
+      <div>
+        <dt>Classes</dt>
+        <dd>Form 2–4</dd>
+      </div>
+      <div>
+        <dt>Qualification</dt>
+        <dd>BA Education (History)</dd>
+      </div>
+      <div>
+        <dt>Employed</dt>
+        <dd>12 January 2019</dd>
+      </div>
+      <div>
+        <dt>Department</dt>
+        <dd>Humanities</dd>
+      </div>
+      <div>
+        <dt>Employment</dt>
+        <dd>Full time</dd>
+      </div>
+    </dl>
+    <p class="form-section">Summary</p>
+    <div class="mini-stats">
+      <div><b>21</b><span>Periods per week</span></div>
+      <div><b>94%</b><span>Attendance</span></div>
+      <div><b>7</b><span>Classes taught</span></div>
+    </div>
+
+    <div class="modal-foot">
+      <a href="timetable.html" class="btn">View timetable</a
+      ><a href="#" class="btn">Send message</a
+      ><a href="#edit-t5" class="btn btn-primary">Edit teacher</a>
+    </div>
+  </div>
+</div>
+<div class="modal" id="edit-t5" role="dialog" aria-label="Edit teacher">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box" action="/teachers/5/edit" method="post">
+    <div class="modal-head">
+      <div>
+        <h2>Edit teacher</h2>
+        <p>TC-005</p>
+      </div>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <div class="form-grid">
+      <label
+        >Full name *<input
+          type="text"
+          name="name"
+          value="John Massawe"
+          required /></label
+      ><label
+        >Email<input
+          type="email"
+          name="email"
+          value="john@sunriseacademy.example" /></label
+      ><label
+        >Phone<input
+          type="tel"
+          name="phone"
+          value="+255 713 100 005" /></label
+      ><label
+        >Subjects<input
+          type="text"
+          name="subjects"
+          value="History, Civics" /></label
+      ><label
+        >Classes<input type="text" name="classes" value="Form 2–4" /></label
+      ><label
+        >Qualification<input
+          type="text"
+          name="qualification"
+          value="BA Education (History)" /></label
+      ><label
+        >Employed on<input
+          type="date"
+          name="employed"
+          value="2019-01-12" /></label
+      ><label
+        >Status<select name="status">
+          <option selected>Active</option>
+          <option>On leave</option>
+          <option>Suspended</option>
+          <option>Resigned</option>
+        </select></label
+      >
+    </div>
+    <div class="modal-foot">
+      <a href="#list" class="btn">Cancel</a
+      ><button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+  </form>
+</div>
+<div
+  class="modal"
+  id="delete-t5"
+  role="dialog"
+  aria-label="Delete John Massawe?"
+>
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box small" action="/teachers/5/delete" method="post">
+    <div class="modal-head">
+      <div><h2>Delete John Massawe?</h2></div>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <p>This removes the record permanently. This cannot be undone.</p>
+    <div class="warning-box">
+      This teacher is assigned to 7 classes. Reassign their classes and
+      timetable periods first.
+    </div>
+    <div class="modal-foot">
+      <a href="#list" class="btn">Cancel</a
+      ><button type="submit" class="btn btn-danger-solid">Delete</button>
+    </div>
+  </form>
+</div>
+<div
+  class="modal"
+  id="view-t6"
+  role="dialog"
+  aria-label="Neema Boniface details"
+>
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>Details</h2>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <div class="profile">
+      <div class="avatar">NB</div>
+      <div>
+        <h3>Neema Boniface</h3>
+        <p>TC-006 · Primary</p>
+      </div>
+      <span style="margin-left: auto"
+        ><span class="badge b-ok">Active</span></span
+      >
+    </div>
+    <dl class="info">
+      <div>
+        <dt>Teacher ID</dt>
+        <dd>TC-006</dd>
+      </div>
+      <div>
+        <dt>Phone</dt>
+        <dd>+255 713 100 006</dd>
+      </div>
+      <div>
+        <dt>Email</dt>
+        <dd>neema@sunriseacademy.example</dd>
+      </div>
+      <div>
+        <dt>Subjects</dt>
+        <dd>Mathematics, Art and craft</dd>
+      </div>
+      <div>
+        <dt>Classes</dt>
+        <dd>Standard 1–4</dd>
+      </div>
+      <div>
+        <dt>Qualification</dt>
+        <dd>Diploma in Primary Education</dd>
+      </div>
+      <div>
+        <dt>Employed</dt>
+        <dd>10 January 2022</dd>
+      </div>
+      <div>
+        <dt>Department</dt>
+        <dd>Primary</dd>
+      </div>
+      <div>
+        <dt>Employment</dt>
+        <dd>Full time</dd>
+      </div>
+    </dl>
+    <p class="form-section">Summary</p>
+    <div class="mini-stats">
+      <div><b>25</b><span>Periods per week</span></div>
+      <div><b>98%</b><span>Attendance</span></div>
+      <div><b>8</b><span>Classes taught</span></div>
+    </div>
+
+    <div class="modal-foot">
+      <a href="timetable.html" class="btn">View timetable</a
+      ><a href="#" class="btn">Send message</a
+      ><a href="#edit-t6" class="btn btn-primary">Edit teacher</a>
+    </div>
+  </div>
+</div>
+<div class="modal" id="edit-t6" role="dialog" aria-label="Edit teacher">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box" action="/teachers/6/edit" method="post">
+    <div class="modal-head">
+      <div>
+        <h2>Edit teacher</h2>
+        <p>TC-006</p>
+      </div>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <div class="form-grid">
+      <label
+        >Full name *<input
+          type="text"
+          name="name"
+          value="Neema Boniface"
+          required /></label
+      ><label
+        >Email<input
+          type="email"
+          name="email"
+          value="neema@sunriseacademy.example" /></label
+      ><label
+        >Phone<input
+          type="tel"
+          name="phone"
+          value="+255 713 100 006" /></label
+      ><label
+        >Subjects<input
+          type="text"
+          name="subjects"
+          value="Mathematics, Art and craft" /></label
+      ><label
+        >Classes<input
+          type="text"
+          name="classes"
+          value="Standard 1–4" /></label
+      ><label
+        >Qualification<input
+          type="text"
+          name="qualification"
+          value="Diploma in Primary Education" /></label
+      ><label
+        >Employed on<input
+          type="date"
+          name="employed"
+          value="2022-01-10" /></label
+      ><label
+        >Status<select name="status">
+          <option selected>Active</option>
+          <option>On leave</option>
+          <option>Suspended</option>
+          <option>Resigned</option>
+        </select></label
+      >
+    </div>
+    <div class="modal-foot">
+      <a href="#list" class="btn">Cancel</a
+      ><button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+  </form>
+</div>
+<div
+  class="modal"
+  id="delete-t6"
+  role="dialog"
+  aria-label="Delete Neema Boniface?"
+>
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box small" action="/teachers/6/delete" method="post">
+    <div class="modal-head">
+      <div><h2>Delete Neema Boniface?</h2></div>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <p>This removes the record permanently. This cannot be undone.</p>
+    <div class="warning-box">
+      This teacher is assigned to 8 classes. Reassign their classes and
+      timetable periods first.
+    </div>
+    <div class="modal-foot">
+      <a href="#list" class="btn">Cancel</a
+      ><button type="submit" class="btn btn-danger-solid">Delete</button>
+    </div>
+  </form>
+</div>
+<div
+  class="modal"
+  id="add-teacher"
+  role="dialog"
+  aria-label="Add new teacher"
+>
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box" action="{% url "add_teacher" %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="modal-head">
+      <div>
+        <h2>Add new teacher</h2>
+        <p>Fields marked * are required.</p>
+      </div>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <p class="form-section">Personal details</p>
+    <div class="form-grid">
+      <label
+        >Full name *<input
+          type="text"
+          name="full_name"
+          value=""
+          required /></label
+      ><label
+        >Gender<select name="gender">
+          <option value="">Choose</option>
+          <option>Female</option>
+          <option>Male</option>
+        </select></label
+      ><label>Date of birth<input type="date" name="date_of_birth" value="" /></label
+      ><label
+        >Phone number *<input
+          type="tel"
+          name="phone_number"
+          value=""
+          required /></label
+      ><label
+        >Email *<input type="email" name="email" value="" required /></label
+      ><label>Photo<input type="file" name="photo" accept="image/*"></label
+      ><label class="full"
+        >Home address<textarea name="home_address"></textarea>
+      </label>
+    </div>
+    <p class="form-section">Work details</p>
+    <div class="form-grid">
+      <label>Teacher ID<input type="text" name="teacher_id" value="" /></label
+      ><label
+        >Employed on<input type="date" name="employed_on" value="" /></label
+      ><label
+        >Qualification<input
+          type="text"
+          name="qualification"
+          value="" /></label
+      ><label
+        >Employment type<select name="employment_type">
+          <option>Full time</option>
+          <option>Part time</option>
+          <option>Contract</option>
+        </select></label
+      ><label
+        >Subjects taught<input
+          type="text"
+          name="subject_tought"
+          value="" /></label
+      ><label
+        >Classes assigned<input type="text" name="class_assigned" value=""
+      /></label>
+    </div>
+    <p class="form-section">Login account</p>
+    <div class="checks">
+      <label
+        ><input type="checkbox" name="create_login" checked /> Create a
+        login for this teacher</label
+      ><label
+        ><input type="checkbox" name="send_sms" checked /> Send login
+        details by SMS</label
+      >
+    </div>
+    <div class="modal-foot">
+      <a href="#list" class="btn">Cancel</a
+      ><button type="submit" class="btn btn-primary">Save teacher</button>
+    </div>
+  </form>
+</div>
+
+{% for teacher_info in teachers %}
+<div
+  class="modal"
+  id="add-teacher-{{teacher_info.id}}"
+  role="dialog"
+  aria-label="Add new teacher"
+>
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box" action="{% url "edit_teacher" teacher_info.id %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="modal-head">
+      <div>
+        <h2>Edit teacher({{teacher_info.full_name}})</h2>
+        <p>Fields marked * are required.</p>
+      </div>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <p class="form-section">Personal details</p>
+    <div class="form-grid">
+      <label
+        >Full name *<input
+          type="text"
+          name="full_name"
+          value="{{teacher_info.full_name}}"
+          required /></label
+      ><label
+        >Gender<select name="gender">
+          <option value="{{teacher_info.gender}}">{{teacher_info.gender}}</option>
+          <option>Female</option>
+          <option>Male</option>
+        </select></label
+      ><label>Date of birth<input type="date" name="date_of_birth" value="{{teacher_info.date_of_birth|date:"Y-m-d"}}" /></label
+      ><label
+        >Phone number *<input
+          type="tel"
+          name="phone_number"
+          value="{{teacher_info.phone_number}}"
+          required /></label
+      ><label
+        >Email *<input type="email" name="email" value="{{teacher_info.email}}" required /></label
+      ><label>Photo<input type="file" name="photo" accept="image/*"></label
+      ><label class="full"
+        >Home address<textarea name="home_address">{{teacher_info.home_address}}</textarea>
+      </label>
+    </div>
+    <p class="form-section">Work details</p>
+    <div class="form-grid">
+      <label>Teacher ID<input type="text" name="teacher_id" value="{{teacher_info.work_detail.teacher_id}}" /></label
+      ><label
+        >Employed on<input type="date" name="employed_on" value="{{teacher_info.work_detail.employed_on|date:"Y-m-d"}}" /></label
+      ><label
+        >Qualification<input
+          type="text"
+          name="qualification"
+          value="{{teacher_info.work_detail.qualification}}" /></label
+      ><label
+        >Employment type<select name="employment_type">
+          <option>{{teacher_info.work_detail.employment_type}}</option>
+          <option>Full time</option>
+          <option>Part time</option>
+          <option>Contract</option>
+        </select></label
+      ><label
+        >Subjects taught<input
+          type="text"
+          name="subject_tought"
+          value="{{teacher_info.work_detail.subject_tought}}" /></label
+      ><label
+        >Classes assigned<input type="text" name="class_assigned" value="{{teacher_info.work_detail.class_assigned}}"
+      /></label>
+    </div>
+    <p class="form-section">Login account</p>
+    <div class="checks">
+      <label
+        ><input type="checkbox" name="create_login" checked /> Create a
+        login for this teacher</label
+      ><label
+        ><input type="checkbox" name="send_sms" checked /> Send login
+        details by SMS</label
+      >
+    </div>
+    <div class="modal-foot">
+      <a href="#list" class="btn">Cancel</a
+      ><button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+  </form>
+</div>
+{% endfor %}
+{% endblock main %}

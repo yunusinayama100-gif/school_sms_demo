@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My profile | Sunrise Academy teacher portal</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="{% static "account/general.css" %}">
+<link rel="stylesheet" href="{% static "account/components.css" %}">
+<style>
+  /* Profile page specific styles. Base styles come from style.css and components.css */
+  .profile-layout { display: grid; grid-template-columns: 320px 1fr; gap: 24px; align-items: start; }
+  .profile-layout > * { min-width: 0; }
+  .side-card { position: sticky; top: 90px; display: grid; gap: 18px; text-align: center; }
+  .photo { width: 112px; height: 112px; border-radius: 50%; margin: 0 auto; background: var(--blue-soft); color: var(--blue); display: grid; place-items: center; font-size: 38px; font-weight: 700; overflow: hidden; }
+  .photo img { width: 100%; height: 100%; object-fit: cover; }
+  .side-card h2 { font-size: 20px; }
+  .side-card p { color: var(--ink-soft); font-size: 14px; }
+  .side-card input[type="file"] { font-size: 13px; padding: 8px; }
+  .side-card .info { grid-template-columns: 1fr 1fr; text-align: left; padding-top: 16px; border-top: 1px solid var(--line); }
+  .complete { text-align: left; }
+  .complete .top { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; }
+  .complete small { display: block; margin-top: 8px; color: var(--ink-soft); font-size: 12px; }
+
+  .stack { display: grid; gap: 24px; }
+  .hint { font-size: 12px; font-weight: 400; color: var(--ink-soft); }
+  input[readonly] { opacity: .7; cursor: not-allowed; }
+  .alert-ok { background: var(--teal-soft); color: var(--teal); padding: 12px 14px; border-radius: 8px; font-size: 14px; font-weight: 600; }
+  .save-bar { position: sticky; bottom: 12px; z-index: 4; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 16px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 6px 24px rgba(0,0,0,.14); }
+  .save-bar span { font-size: 13px; color: var(--ink-soft); }
+
+  @media (max-width: 1000px) {
+    .profile-layout { grid-template-columns: 1fr; }
+    .side-card { position: static; }
+  }
+  @media (max-width: 700px) { .form-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<input type="checkbox" id="menu-toggle" class="menu-toggle" aria-label="Open navigation menu">
+
+<div class="app">
+
+  <aside class="sidebar">
+    <a class="brand" href="teacher-dashboard.html">
+      <div class="brand-mark">S</div>
+      <div><strong>Sunrise Academy</strong><span>Teacher portal</span></div>
+    </a>
+
+    <nav aria-label="Main">
+      <div class="nav-group">
+        <h3>Overview</h3>
+        <ul>
+          <li><a href="teacher-dashboard.html">My dashboard</a></li>
+          <li><a href="#">Notices <span class="nav-count">3</span></a></li>
+        </ul>
+      </div>
+      <br>
+      <div class="nav-group">
+        <h3>Teaching</h3>
+        <ul>
+          <li><a href="#">My timetable</a></li>
+          <li><a href="#">My classes</a></li>
+          <li><a href="#">Attendance <span class="nav-count">2</span></a></li>
+          <li><a href="#">Assignments</a></li>
+          <li><a href="#">Marks and results</a></li>
+          <li><a href="#">Class materials</a></li>
+        </ul>
+      </div>
+      <br>
+      <div class="nav-group">
+        <h3>My records</h3>
+        <ul>
+          <li><a href="#">Leave requests</a></li>
+          <li><a href="#">Payslips</a></li>
+          <li><a href="teacher-profile.html" aria-current="page">My profile</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <a class="sidebar-foot" href="teacher-profile.html"><b>Salma Hassan</b>TC-001 · Sciences</a>
+  </aside>
+
+  <div class="main">
+
+    <header class="topbar">
+      <label for="menu-toggle" class="menu-btn" aria-label="Toggle menu">&#9776;</label>
+      <div class="search"><input type="search" placeholder="Search students, classes, assignments" aria-label="Search"></div>
+      <div class="top-actions">
+        <span class="term-chip">Term 2, 2026</span>
+        <a class="avatar" href="teacher-profile.html" title="My profile">SH</a>
+        <a href="#" class="btn">Sign out</a>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <div class="page-head">
+        <div>
+          <h1>My profile</h1>
+          <p><a href="teacher-dashboard.html" style="text-decoration:underline">My dashboard</a> / My profile</p>
+        </div>
+        <div class="btn-row">
+          <a href="teacher-dashboard.html" class="btn">Back to dashboard</a>
+        </div>
+      </div>
+
+      <!-- After saving, your backend can show this message:
+           <div class="alert-ok" role="status">Your profile was saved.</div> -->
+
+      <div class="profile-layout">
+
+        <!-- ================= Left: summary ================= -->
+        <aside class="card side-card" aria-label="Profile summary">
+          <div>
+            <!-- If the teacher has a photo, use: <div class="photo"><img src="/uploads/photos/TC-001.jpg" alt="Salma Hassan"></div> -->
+            <div class="photo" aria-hidden="true">SH</div>
+          </div>
+          <div>
+            <h2>Salma Hassan</h2>
+            <p>TC-001 · Sciences department</p>
+            <p><span class="badge b-ok">Active teacher</span></p>
+          </div>
+          <label style="text-align:left;font-size:13px;font-weight:600">Profile photo
+            <input type="file" name="photo" form="profile-form" accept="image/png, image/jpeg">
+            <span class="hint">JPG or PNG, up to 2 MB. Use a clear photo of your face.</span>
+          </label>
+
+          <div class="complete">
+            <div class="top"><span>Profile completeness</span><b>90%</b></div>
+            <div class="track"><i style="width:90%"></i></div>
+            <small>Upload your teaching certificate to reach 100%.</small>
+          </div>
+
+          <dl class="info">
+            <div><dt>Employed</dt><dd>5 Feb 2018</dd></div>
+            <div><dt>Contract</dt><dd>Full time</dd></div>
+            <div><dt>Subjects</dt><dd>Biology, Chemistry</dd></div>
+            <div><dt>Classes</dt><dd>Form 1–4</dd></div>
+          </dl>
+
+          <p class="notice" style="text-align:left">Your subjects, classes, salary and contract are set by the school office. Contact the office if something here is wrong.</p>
+        </aside>
+
+        <!-- ================= Right: forms ================= -->
+        <div class="stack">
+
+          <form class="stack" id="profile-form" action="/teacher/profile/save" method="post" enctype="multipart/form-data">
+
+            <p class="notice">Fields marked * are required. Your changes are saved to your staff record when you press Save changes.</p>
+
+            <section class="card">
+              <div class="card-head"><h2>Personal details</h2></div>
+              <div class="form-grid">
+                <label>First name *<input name="first_name" value="Salma" required autocomplete="given-name"></label>
+                <label>Middle name<input name="middle_name" value="Ali"></label>
+                <label>Last name *<input name="last_name" value="Hassan" required autocomplete="family-name"></label>
+                <label>Gender *
+                  <select name="gender" required>
+                    <option value="">Choose</option><option selected>Female</option><option>Male</option>
+                  </select>
+                </label>
+                <label>Date of birth *<input type="date" name="dob" value="1988-06-12" required autocomplete="bday"></label>
+                <label>Marital status
+                  <select name="marital_status">
+                    <option value="">Choose</option><option>Single</option><option selected>Married</option><option>Divorced</option><option>Widowed</option>
+                  </select>
+                </label>
+                <label>Nationality
+                  <select name="nationality">
+                    <option selected>Tanzanian</option><option>Kenyan</option><option>Ugandan</option><option>Other</option>
+                  </select>
+                </label>
+                <label>National ID (NIDA) number<input name="nida" value="" placeholder="20 digits" inputmode="numeric"></label>
+                <label>Languages spoken<input name="languages" value="Kiswahili, English"></label>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card-head"><h2>Contact and address</h2></div>
+              <div class="form-grid">
+                <label>Phone number *<input type="tel" name="phone" value="+255 713 100 001" required pattern="\+?[0-9 ]{9,15}" autocomplete="tel"></label>
+                <label>Another phone number<input type="tel" name="phone2" value="" placeholder="+255 7xx xxx xxx" pattern="\+?[0-9 ]{9,15}"></label>
+                <label>Personal email<input type="email" name="personal_email" value="" placeholder="name@example.com" autocomplete="email"></label>
+                <label>School email<input type="email" name="school_email" value="salma@sunriseacademy.example" readonly><span class="hint">Set by the school. It is your login name.</span></label>
+                <label>Region *<input name="region" value="Dar es Salaam" required></label>
+                <label>District *<input name="district" value="Kinondoni" required></label>
+                <label>Ward or street<input name="ward" value="Mikocheni B"></label>
+                <label>House or plot number<input name="house" value="Plot 214"></label>
+                <label class="full">Home address<textarea name="address">Mikocheni B, behind the petrol station</textarea></label>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card-head"><h2>Qualifications and registration</h2></div>
+              <div class="form-grid">
+                <label>Highest qualification *
+                  <select name="qualification_level" required>
+                    <option value="">Choose</option><option>Certificate</option><option>Diploma</option><option selected>Bachelor's degree</option><option>Master's degree</option><option>PhD</option>
+                  </select>
+                </label>
+                <label>Field of study *<input name="qualification_field" value="Education (Chemistry)" required></label>
+                <label>University or college<input name="institution" value="University of Dar es Salaam"></label>
+                <label>Year graduated<input type="number" name="grad_year" value="2012" min="1970" max="2026"></label>
+                <label>Teachers Service Commission (TSC) number<input name="tsc_number" value="TSC/2013/04417"></label>
+                <label>Other training or courses<input name="courses" value="Laboratory safety, Inclusive education"></label>
+                <label class="full">Teaching certificate
+                  <input type="file" name="certificate" accept="application/pdf, image/png, image/jpeg">
+                  <span class="hint">PDF or image, up to 5 MB. Only the school office can see it.</span>
+                </label>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card-head"><h2>Next of kin and emergency contact</h2></div>
+              <div class="form-grid">
+                <label>Full name *<input name="kin_name" value="Ali Hassan" required></label>
+                <label>Relationship *<input name="kin_relation" value="Husband" required></label>
+                <label>Phone number *<input type="tel" name="kin_phone" value="+255 754 000 991" required pattern="\+?[0-9 ]{9,15}"></label>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card-head"><h2>Payment details</h2><span>Seen only by the accountant and school office</span></div>
+              <div class="form-grid">
+                <label>Bank name<input name="bank_name" value="CRDB Bank"></label>
+                <label>Account name<input name="bank_account_name" value="Salma Ali Hassan"></label>
+                <label>Account number<input name="bank_account" value="" placeholder="Bank account number" inputmode="numeric" autocomplete="off"></label>
+                <label>Mobile money number<input type="tel" name="mobile_money" value="+255 713 100 001" pattern="\+?[0-9 ]{9,15}"></label>
+                <label>Tax number (TIN)<input name="tin" value="" inputmode="numeric"></label>
+                <label>Social security number (NSSF)<input name="nssf" value="" inputmode="numeric"></label>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card-head"><h2>About me and notifications</h2></div>
+              <div class="form-grid">
+                <label class="full">About me<textarea name="about" placeholder="Share your teaching interests and experience">I have taught sciences for eight years and run the school science club.</textarea></label>
+                <label class="full">Clubs or activities I supervise<input name="activities" value="Science club, Environment club"></label>
+              </div>
+              <p class="form-section">Send me notifications about</p>
+              <div class="checks">
+                <label><input type="checkbox" name="notify" value="attendance" checked> Attendance reminders</label>
+                <label><input type="checkbox" name="notify" value="assignments" checked> Work handed in</label>
+                <label><input type="checkbox" name="notify" value="timetable" checked> Timetable changes</label>
+                <label><input type="checkbox" name="notify" value="leave"> Leave decisions</label>
+                <label><input type="checkbox" name="notify" value="notices" checked> School notices</label>
+              </div>
+            </section>
+
+            <div class="save-bar">
+              <span>Remember to save before you leave this page.</span>
+              <div class="btn-row">
+                <button type="reset" class="btn">Undo changes</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </form>
+
+          <!-- ================= Password: separate form ================= -->
+          <form class="card" id="password" action="/teacher/password/change" method="post">
+            <div class="card-head"><h2>Change password</h2><span>Use at least 8 characters</span></div>
+            <div class="form-grid">
+              <label class="full">Current password *<input type="password" name="current_password" required autocomplete="current-password"></label>
+              <label>New password *<input type="password" name="new_password" required minlength="8" autocomplete="new-password"></label>
+              <label>Confirm new password *<input type="password" name="confirm_password" required minlength="8" autocomplete="new-password"></label>
+            </div>
+            <div class="modal-foot"><button type="submit" class="btn btn-primary">Update password</button></div>
+          </form>
+
+        </div>
+      </div>
+
+    </main>
+
+    <footer>Sunrise Academy teacher portal · Need help? Contact the school office.</footer>
+  </div>
+</div>
+
+</body>
+</html>

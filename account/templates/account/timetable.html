@@ -1,0 +1,475 @@
+{% extends "account/admin.html" %}
+{% load static %}
+{% block title %}teacher dashboard{% endblock title %}
+{% block styles %}
+<link rel="stylesheet" href="{% static "account/components.css" %}">
+<link rel="stylesheet" href="{% static "account/timetable.css" %}">
+{% endblock styles %}
+{% block main %}
+
+<main class="content">
+    <div class="page-head">
+    <div>
+        <h1>Timetable</h1>
+        <p>
+        <a
+            href="superuser-dashboard.html"
+            style="text-decoration: underline"
+            >Dashboard</a
+        >
+        / Timetable
+        </p>
+    </div>
+    <div class="btn-row">
+        <a href="#" class="btn">Print</a
+        ><a href="#copy-tt" class="btn">Copy timetable</a
+        ><a href="#period" class="btn btn-primary">Add period</a>
+    </div>
+    </div>
+    <section class="card" id="list">
+    <div class="card-head">
+        <h2>Weekly timetable</h2>
+        <span>Term 2, 2026</span>
+    </div>
+    <nav class="tabs" aria-label="Timetable view">
+        <a href="timetable.html" aria-current="page">By class</a
+        ><a href="#">By teacher</a><a href="#">By room</a>
+    </nav>
+    <form class="toolbar" action="timetable.html" method="get">
+        <label class="field"
+        >Class<select name="class">
+            <option value="">Form 2 B</option>
+            <option>Standard 2 A</option>
+            <option>Standard 5 B</option>
+            <option>Form 1 A</option>
+            <option>Form 2 B</option>
+            <option>Form 3 A</option>
+            <option>Form 4 A</option>
+        </select></label
+        ><label class="field"
+        >Term<select name="term">
+            <option value="">Term 2, 2026</option>
+            <option>Term 1, 2026</option>
+            <option>Term 2, 2026</option>
+            <option>Term 3, 2026</option>
+        </select></label
+        ><button class="btn btn-primary" type="submit">
+        Apply filters</button
+        ><a class="btn" href="timetable.html">Clear</a>
+    </form>
+    <div class="table-wrap">
+        <table class="tt">
+        <thead>
+            <tr>
+            <th>Time</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            <td class="time">07:30 – 08:10</td>
+            <td>
+                <a href="#period" class="slot s-blue"
+                ><b>Mathematics</b><small>Mr. Mrope · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-amber"
+                ><b>English</b><small>Ms. Mollel · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-teal"
+                ><b>Biology</b><small>Ms. Hassan · Lab 1</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-blue"
+                ><b>Mathematics</b><small>Mr. Mrope · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-red"
+                ><b>History</b><small>Mr. Massawe · Room 4</small></a
+                >
+            </td>
+            </tr>
+            <tr>
+            <td class="time">08:10 – 08:50</td>
+            <td>
+                <a href="#period" class="slot s-blue"
+                ><b>Mathematics</b><small>Mr. Mrope · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-teal"
+                ><b>Chemistry</b><small>Ms. Hassan · Lab 1</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-amber"
+                ><b>English</b><small>Ms. Mollel · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-amber"
+                ><b>Kiswahili</b><small>Ms. Tarimo · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-blue"
+                ><b>Mathematics</b><small>Mr. Mrope · Room 4</small></a
+                >
+            </td>
+            </tr>
+            <tr>
+            <td class="time">08:50 – 09:30</td>
+            <td>
+                <a href="#period" class="slot s-amber"
+                ><b>English</b><small>Ms. Mollel · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-blue"
+                ><b>Mathematics</b><small>Mr. Mrope · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-blue"
+                ><b>Mathematics</b><small>Mr. Mrope · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-amber"
+                ><b>English</b><small>Ms. Mollel · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-amber"
+                ><b>English</b><small>Ms. Mollel · Room 4</small></a
+                >
+            </td>
+            </tr>
+            <tr class="break">
+            <td colspan="6">BREAK 09:30 – 10:00</td>
+            </tr>
+            <tr>
+            <td class="time">10:00 – 10:40</td>
+            <td>
+                <a href="#period" class="slot s-teal"
+                ><b>Biology</b><small>Ms. Hassan · Lab 1</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-red"
+                ><b>History</b><small>Mr. Massawe · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-teal"
+                ><b>Physics</b><small>Mr. Mrope · Lab 2</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-red"
+                ><b>Civics</b><small>Mr. Massawe · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-amber"
+                ><b>Kiswahili</b><small>Ms. Tarimo · Room 4</small></a
+                >
+            </td>
+            </tr>
+            <tr>
+            <td class="time">10:40 – 11:20</td>
+            <td>
+                <a href="#period" class="slot s-amber"
+                ><b>Kiswahili</b><small>Ms. Tarimo · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-teal"
+                ><b>Biology</b><small>Ms. Hassan · Lab 1</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-teal"
+                ><b>Chemistry</b><small>Ms. Hassan · Lab 1</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-teal"
+                ><b>Biology</b><small>Ms. Hassan · Lab 1</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-red"
+                ><b>Geography</b><small>Mr. Massawe · Room 4</small></a
+                >
+            </td>
+            </tr>
+            <tr>
+            <td class="time">11:20 – 12:00</td>
+            <td>
+                <a href="#period" class="slot s-red"
+                ><b>History</b><small>Mr. Massawe · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-red"
+                ><b>Civics</b><small>Mr. Massawe · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-amber"
+                ><b>Kiswahili</b><small>Ms. Tarimo · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-gray"
+                ><b>Computer studies</b
+                ><small>No teacher · Computer lab</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-teal"
+                ><b>Biology</b><small>Ms. Hassan · Lab 1</small></a
+                >
+            </td>
+            </tr>
+            <tr class="break">
+            <td colspan="6">LUNCH 12:00 – 13:00</td>
+            </tr>
+            <tr>
+            <td class="time">13:00 – 13:40</td>
+            <td>
+                <a href="#period" class="slot s-teal"
+                ><b>Physics</b><small>Mr. Mrope · Lab 2</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-amber"
+                ><b>Kiswahili</b><small>Ms. Tarimo · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-red"
+                ><b>Geography</b><small>Mr. Massawe · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-teal"
+                ><b>Chemistry</b><small>Ms. Hassan · Lab 1</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-gray"
+                ><b>Library</b><small>Mr. Kweka · Library</small></a
+                >
+            </td>
+            </tr>
+            <tr>
+            <td class="time">13:40 – 14:20</td>
+            <td>
+                <a href="#period" class="slot s-red"
+                ><b>Geography</b><small>Mr. Massawe · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-gray"
+                ><b>Computer studies</b
+                ><small>No teacher · Computer lab</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-red"
+                ><b>History</b><small>Mr. Massawe · Room 4</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-teal"
+                ><b>Physics</b><small>Mr. Mrope · Lab 2</small></a
+                >
+            </td>
+            <td>
+                <a href="#period" class="slot s-gray"
+                ><b>Games</b><small>Sports coach · Field</small></a
+                >
+            </td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+    </section>
+    <section class="grid-2">
+    <article class="card">
+        <div class="card-head"><h2>Needs your attention</h2></div>
+        <ul class="feed">
+        <li class="alert">
+            <div>
+            <p>
+                Computer studies has no teacher assigned. 2 periods in
+                Form 2 B are empty.
+            </p>
+            <small>Assign a teacher in Subjects</small>
+            </div>
+        </li>
+        <li class="warn">
+            <div>
+            <p>
+                Ms. Hassan has Biology and Chemistry in different labs
+                back to back on Wednesday.
+            </p>
+            <small>Check travel time between labs</small>
+            </div>
+        </li>
+        <li class="">
+            <div>
+            <p>
+                Form 2 B has 40 teaching periods per week. No clashes
+                found.
+            </p>
+            <small>Checked today at 07:00</small>
+            </div>
+        </li>
+        </ul>
+    </article>
+    <article class="card">
+        <div class="card-head"><h2>Colour key</h2></div>
+        <div class="key">
+        <span><i class="s-blue"></i>Mathematics</span
+        ><span><i class="s-teal"></i>Sciences</span
+        ><span><i class="s-amber"></i>Languages</span
+        ><span><i class="s-red"></i>Humanities</span
+        ><span><i class="s-gray"></i>Other activities</span>
+        </div>
+    </article>
+    </section>
+</main>
+
+<div
+    class="modal"
+    id="period"
+    role="dialog"
+    aria-label="Add or change a period"
+>
+    <a class="modal-bg" href="#list" aria-label="Close"></a>
+    <form class="modal-box" action="{% url "timetables" %}" method="post">
+        {% csrf_token %}
+    <div class="modal-head">
+        <div>
+        <h2>Add or change a period</h2>
+        <p>
+
+        </p>
+        </div>
+        <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <div class="form-grid">
+        <label
+        >Class<select name="class_name">
+            <option>Standard 2 A</option>
+            <option>Standard 5 B</option>
+            <option>Form 1 A</option>
+            <option selected>Form 2 B</option>
+            <option>Form 3 A</option>
+            <option>Form 4 A</option>
+        </select></label
+        ><label
+        >Day<select name="day">
+            <option>Monday</option>
+            <option>Tuesday</option>
+            <option>Wednesday</option>
+            <option>Thursday</option>
+            <option>Friday</option>
+        </select></label
+        ><label
+        >Start time<input type="time" name="start_time" value="" /></label
+        ><label>End time<input type="time" name="end_time" value="" /></label
+        ><label
+        >Subject<select name="subject">
+            <option selected>Mathematics</option>
+            <option>English</option>
+            <option>Kiswahili</option>
+            <option>Biology</option>
+            <option>Chemistry</option>
+            <option>Physics</option>
+            <option>History</option>
+            <option>Civics</option>
+            <option>Geography</option>
+            <option>Computer studies</option>
+            <option>Library</option>
+            <option>Games</option>
+        </select></label
+        ><label
+        >Teacher<select name="teacher">
+            <option>Salma Hassan</option>
+            <option selected>Hassan Mrope</option>
+            <option>Esther Mollel</option>
+            <option>Rehema Tarimo</option>
+            <option>John Massawe</option>
+            <option>Neema Boniface</option>
+            <option>Not assigned</option>
+        </select></label
+        ><label class="full"
+        >Room<input type="text" name="room" value=""
+        /></label>
+    </div>
+    <div class="modal-foot">
+        <a href="#list" class="btn">Cancel</a
+        ><button type="submit" class="btn btn-primary">Save period</button>
+    </div>
+    </form>
+</div>
+<div class="modal" id="copy-tt" role="dialog" aria-label="Copy timetable">
+    <a class="modal-bg" href="#list" aria-label="Close"></a>
+    <form class="modal-box" action="/timetable/copy" method="post">
+    <div class="modal-head">
+        <div>
+        <h2>Copy timetable</h2>
+        <p>Copy this timetable to other classes.</p>
+        </div>
+        <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+    <div class="form-grid">
+        <label class="full"
+        >Copy from<select name="from">
+            <option>Standard 2 A</option>
+            <option>Standard 5 B</option>
+            <option>Form 1 A</option>
+            <option selected>Form 2 B</option>
+            <option>Form 3 A</option>
+            <option>Form 4 A</option>
+        </select></label
+        >
+    </div>
+    <div class="checks" style="margin-top: 14px">
+        <label
+        ><input type="checkbox" name="to" value="Standard 2 A" /> Standard 2
+        A</label
+        ><label
+        ><input type="checkbox" name="to" value="Standard 5 B" /> Standard 5
+        B</label
+        ><label
+        ><input type="checkbox" name="to" value="Form 1 A" /> Form 1
+        A</label
+        ><label
+        ><input type="checkbox" name="to" value="Form 3 A" /> Form 3
+        A</label
+        ><label
+        ><input type="checkbox" name="to" value="Form 4 A" /> Form 4
+        A</label
+        >
+    </div>
+    <div class="modal-foot">
+        <a href="#list" class="btn">Cancel</a
+        ><button type="submit" class="btn btn-primary">Copy timetable</button>
+    </div>
+    </form>
+</div>
+{% endblock main %}

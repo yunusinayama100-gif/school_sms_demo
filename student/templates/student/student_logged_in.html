@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My dashboard | Sunrise Academy student portal</title>
+<link rel="stylesheet" href="{% static "account/general.css" %}">
+<link rel="stylesheet" href="{% static "account/components.css" %}">
+{% block styles %}
+<link rel="stylesheet" href="{% static "student/student_logged_in.css" %}">
+{% endblock styles %}
+
+
+</head>
+<body>
+
+<input type="checkbox" id="menu-toggle" class="menu-toggle" aria-label="Open navigation menu">
+
+<div class="app">
+
+  <!-- ============ Sidebar ============ -->
+  <aside class="sidebar">
+    <a class="brand" href="{% url "student_logged_in" %}">
+      <div class="brand-mark">S</div>
+      <div><strong>Wanondo Academy</strong><span>Student portal</span></div>
+    </a>
+
+    <nav aria-label="Main">
+      <div class="nav-group">
+        <h3>Overview</h3>
+        <ul>
+          <li><a href="{% url "student_logged_in" %}" aria-current="page">My dashboard</a></li>
+          <li><a href="#">Notices <span class="nav-count">3</span></a></li>
+        </ul>
+      </div>
+      <br>
+      <div class="nav-group">
+        <h3>Learning</h3>
+        <ul>
+          <li><a href="#">My timetable</a></li>
+          <li><a href="#">Assignments <span class="nav-count">2</span></a></li>
+          <li><a href="#">Results and report cards</a></li>
+          <li><a href="#">Exam schedule</a></li>
+          <li><a href="#">Library</a></li>
+        </ul>
+      </div>
+      <br>
+      <div class="nav-group">
+        <h3>My records</h3>
+        <ul>
+          <li><a href="#">Attendance</a></li>
+          <li><a href="#">Fees and payments</a></li>
+          <li><a href="#">Leave requests</a></li>
+          <li><a href="{% url "student_profile" %}">My profile</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="sidebar-foot"><b>{{request.user.student.first_name}} {{request.user.student.last_name}}</b>{{request.user.registration_number}} · Form 2 B</div>
+  </aside>
+
+  <!-- ============ Main ============ -->
+   
+  <div class="main">
+
+    <header class="topbar">
+      <label for="menu-toggle" class="menu-btn" aria-label="Toggle menu">&#9776;</label>
+      <div class="search"><input type="search" placeholder="Search subjects, assignments, notices" aria-label="Search"></div>
+      <div class="top-actions">
+        <span class="term-chip">Term 2, 2026</span>
+        <div class="avatar" title="Zawadi Komba">ZK</div>
+        <form class="btn"  action="{% url "logout" %}" method="post">
+          {% csrf_token %}
+          <button type="submit">Sign out</button>
+        </form>
+      </div>
+    </header>
+
+    {% block main %}
+    <main class="content">
+
+      <div class="page-head">
+        <div class="hello">
+          <div class="avatar">ZK</div>
+          <div>
+            <h1>Hello, Zawadi -{{request.user.email}} ({{request.user.id}})({{request.user.student.student_class}})</h1>
+            <p>{% now "l, d F Y" %}. You have 8 classes today and 2 assignments to finish.</p>
+            <div class="chips"><span class="chip">Form 2 B</span><span class="chip">ST-2026-0519</span><span class="chip">Class teacher: Ms. Mollel</span></div>
+          </div>
+        </div>
+        <div class="btn-row">
+          <a href="#" class="btn">Download report card</a>
+          <a href="#" class="btn btn-primary">Request leave</a>
+        </div>
+      </div>
+
+      <!-- Key numbers -->
+      <section class="stats" aria-label="My numbers">
+        <article class="card stat"><span class="label">Attendance this term</span><span class="value">89%</span><span class="note">16 school days so far</span></article>
+        <article class="card stat"><span class="label">Average score</span><span class="value">77%</span><span class="note">Mid-term exams · <span class="up">+3</span> from Term 1</span></article>
+        <article class="card stat"><span class="label">Class position</span><span class="value">12th</span><span class="note">Out of 38 students</span></article>
+        <article class="card stat"><span class="label">Fees balance</span><span class="value">TZS 90,000</span><span class="note">Due by 31 October</span></article>
+      </section>
+
+      <!-- Today's classes + attendance -->
+      <section class="grid-2">
+        <article class="card">
+          <div class="card-head"><h2>Today's classes</h2><a href="#">Full timetable</a></div>
+          <ul class="sched">
+            <li class="c-blue"><time>07:30 – 08:10</time><div><b>Mathematics</b><small>Mr. Mrope</small></div><span class="room">Room 4</span></li>
+            <li class="c-amber"><time>08:10 – 08:50</time><div><b>Kiswahili</b><small>Ms. Tarimo</small></div><span class="room">Room 4</span></li>
+            <li class="c-amber"><time>08:50 – 09:30</time><div><b>English</b><small>Ms. Mollel</small></div><span class="room">Room 4</span></li>
+            <li class="gap"><time>09:30 – 10:00</time><span>Break</span></li>
+            <li class="c-red"><time>10:00 – 10:40</time><div><b>Civics</b><small>Mr. Massawe</small></div><span class="room">Room 4</span></li>
+            <li class="c-teal"><time>10:40 – 11:20</time><div><b>Biology</b><small>Ms. Hassan</small></div><span class="room">Lab 1</span></li>
+            <li><time>11:20 – 12:00</time><div><b>Computer studies</b><small>Teacher to be announced</small></div><span class="room">Computer lab</span></li>
+            <li class="gap"><time>12:00 – 13:00</time><span>Lunch</span></li>
+            <li class="c-teal"><time>13:00 – 13:40</time><div><b>Chemistry</b><small>Ms. Hassan</small></div><span class="room">Lab 1</span></li>
+            <li class="c-teal"><time>13:40 – 14:20</time><div><b>Physics</b><small>Mr. Mrope</small></div><span class="room">Lab 2</span></li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <div class="card-head"><h2>My attendance</h2><span>October 2026</span></div>
+          <div class="cal" role="img" aria-label="Attendance calendar for October 2026">
+            <span class="h">Mon</span><span class="h">Tue</span><span class="h">Wed</span><span class="h">Thu</span><span class="h">Fri</span><span class="h">Sat</span><span class="h">Sun</span>
+            <span></span><span></span><span></span><span class="d p">1</span><span class="d p">2</span><span class="d off">3</span><span class="d off">4</span><span class="d p">5</span><span class="d p">6</span><span class="d p">7</span><span class="d e">8</span><span class="d l">9</span><span class="d off">10</span><span class="d off">11</span><span class="d p">12</span><span class="d p">13</span><span class="d a">14</span><span class="d p">15</span><span class="d p">16</span><span class="d off">17</span><span class="d off">18</span><span class="d p">19</span><span class="d l">20</span><span class="d p">21</span><span class="d p t">22</span><span class="d f">23</span><span class="d off">24</span><span class="d off">25</span><span class="d f">26</span><span class="d f">27</span><span class="d f">28</span><span class="d f">29</span><span class="d f">30</span><span class="d off">31</span>
+          </div>
+          <div class="cal-legend">
+            <span><i style="background:var(--teal)"></i>Present 12</span>
+            <span><i style="background:var(--amber)"></i>Late 2</span>
+            <span><i style="background:var(--blue)"></i>Excused 1</span>
+            <span><i style="background:var(--red)"></i>Absent 1</span>
+          </div>
+        </article>
+      </section>
+
+      <!-- Assignments + results -->
+      <section class="grid-2">
+        <article class="card">
+          <div class="card-head"><h2>Assignments</h2><a href="#">See all</a></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Subject</th><th>Task</th><th>Due</th><th>Status</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr><td>Mathematics</td><td>Quadratic equations, exercise 4</td><td>Fri 23 Oct</td><td><span class="badge b-wait">Due tomorrow</span></td><td><a href="#" class="btn btn-sm">Submit</a></td></tr>
+                <tr><td>Biology</td><td>Lab report: plant cells</td><td>Mon 26 Oct</td><td><span class="badge b-wait">Not started</span></td><td><a href="#" class="btn btn-sm">Open</a></td></tr>
+                <tr><td>English</td><td>Essay: My community</td><td>Tue 20 Oct</td><td><span class="badge b-ok">Submitted</span></td><td><a href="#" class="btn btn-sm">View</a></td></tr>
+                <tr><td>History</td><td>Timeline of independence</td><td>Fri 16 Oct</td><td><span class="badge b-info">Graded · 18/20</span></td><td><a href="#" class="btn btn-sm">Feedback</a></td></tr>
+                <tr><td>Kiswahili</td><td>Insha: Maisha ya shule</td><td>Wed 14 Oct</td><td><span class="badge b-bad">Missing</span></td><td><a href="#" class="btn btn-sm">Submit late</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-head"><h2>Mid-term results</h2><a href="#">Full report</a></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Subject</th><th>My score</th><th>Class average</th><th>Grade</th></tr></thead>
+              <tbody>
+                <tr><td>Kiswahili</td><td>85%</td><td>66%</td><td><span class="grade">A</span></td></tr>
+                <tr><td>Civics</td><td>82%</td><td>68%</td><td><span class="grade">A</span></td></tr>
+                <tr><td>Mathematics</td><td>81%</td><td>58%</td><td><span class="grade">A</span></td></tr>
+                <tr><td>Biology</td><td>79%</td><td>63%</td><td><span class="grade">A</span></td></tr>
+                <tr><td>History</td><td>77%</td><td>65%</td><td><span class="grade">A</span></td></tr>
+                <tr><td>English</td><td>74%</td><td>64%</td><td><span class="grade b">B</span></td></tr>
+                <tr><td>Chemistry</td><td>70%</td><td>55%</td><td><span class="grade b">B</span></td></tr>
+                <tr><td>Physics</td><td>68%</td><td>52%</td><td><span class="grade b">B</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <!-- Fees, notices, shortcuts -->
+      <section class="grid-3">
+        <article class="card">
+          <div class="card-head"><h2>My fees</h2><a href="#">Payment history</a></div>
+          <div class="big-line"><b>TZS 90,000</b><span class="badge b-wait">Balance</span></div>
+          <div class="track"><i style="width:85%"></i></div>
+          <p style="font-size:13px;color:var(--ink-soft);margin:8px 0 16px">Paid TZS 510,000 of TZS 600,000. Next due date: 31 October.</p>
+          <a href="#" class="btn btn-primary">Pay with mobile money</a>
+        </article>
+
+        <article class="card">
+          <div class="card-head"><h2>Notices</h2><a href="#">See all</a></div>
+          <ul class="feed">
+            <li class="warn"><div><p>Form 2 mid-term parents meeting is on Saturday 24 October at 09:00.</p><small>Head teacher · Today</small></div></li>
+            <li><div><p>The library will close early at 15:00 this Friday.</p><small>Library · Yesterday</small></div></li>
+            <li><div><p>Science club registration is now open.</p><small>Ms. Hassan · 2 days ago</small></div></li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <div class="card-head"><h2>Quick links</h2></div>
+          <div class="shortcuts">
+            <a href="#">Exam schedule<small>Term 2 final exams</small></a>
+            <a href="#">Library books<small>1 book due on 28 Oct</small></a>
+            <a href="#">Class materials<small>Notes and past papers</small></a>
+            <a href="#">Contact teacher<small>Send a message</small></a>
+          </div>
+        </article>
+      </section>
+
+    </main>
+    {% endblock main %} 
+
+    <footer>Sunrise Academy student portal · Need help? Ask your class teacher or the school office.</footer>
+  </div>
+  
+</div>
+
+</body>
+</html>

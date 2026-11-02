@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Superuser dashboard | School management system{% endblock title %}</title>
+<link rel="stylesheet" href="{% static "account/general.css" %}">
+{% block styles %}
+{% endblock styles %}
+</head>
+<body>
+
+<input type="checkbox" id="menu-toggle" class="menu-toggle" aria-label="Open navigation menu">
+
+<div class="app">
+
+  <!-- ============ Sidebar ============ -->
+  <aside class="sidebar">
+    <a class="brand" href="#">
+      <div class="brand-mark">S</div>
+      <div>
+        <strong>Sunrise Academy</strong>
+        <span>Superuser console</span>
+      </div>
+    </a>
+
+    <nav aria-label="Main">
+      <div class="nav-group">
+        <h3>Overview</h3>
+        <ul>
+          <li><a href="{% url "admin_page" %}" aria-current="page">Dashboard</a></li>
+          <li><a href="#">Reports</a></li>
+          <li><a href="#">Notice board</a></li>
+        </ul>
+      </div>
+      <br>
+      <div class="nav-group">
+        <h3>People</h3>
+        <ul>
+          <li><a href="{% url "student" %}">Students</a></li>
+          <li><a href="{% url "teacher_dashboard" %}">Teachers</a></li>
+          <li><a href="#">Parents</a></li>
+          <li><a href="#">Staff</a></li>
+          <li><a href="#">Admissions <span class="nav-count">14</span></a></li>
+        </ul>
+      </div>
+      <br>
+      <div class="nav-group">
+        <h3>Academics</h3>
+        <ul>
+          <li><a href="#">Classes and sections</a></li>
+          <li><a href="{% url "subjects" %}">Subjects</a></li>
+          <li><a href="{% url "timetables" %}">Timetable</a></li>
+          <li><a href="#">Attendance</a></li>
+          <li><a href="#">Exams and results</a></li>
+        </ul>
+      </div>
+      <br>
+      <div class="nav-group">
+        <h3>Finance and resources</h3>
+        <ul>
+          <li><a href="#">Fees and invoices</a></li>
+          <li><a href="#">Payroll</a></li>
+          <li><a href="#">Library</a></li>
+          <li><a href="#">Transport</a></li>
+        </ul>
+      </div>
+      <br>
+      <div class="nav-group">
+        <h3>System</h3>
+        <ul>
+          <li><a href="#">Users and roles</a></li>
+          <li><a href="#">School settings</a></li>
+          <li><a href="#">Audit log</a></li>
+          <li><a href="#">Backups</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="sidebar-foot">
+      <b>Signed in as superuser</b>
+      admin@sunriseacademy.example
+    </div>
+  </aside>
+
+  <!-- ============ Main ============ -->
+  <div class="main">
+
+    <header class="topbar">
+      <label for="menu-toggle" class="menu-btn" aria-label="Toggle menu">&#9776;</label>
+      <div class="search">
+        <input type="search" placeholder="Search students, teachers, invoices" aria-label="Search">
+      </div>
+      <div class="top-actions">
+        <span class="term-chip">Term 2, 2026</span>
+        <a href="#" class="btn">Notifications</a>
+        <div class="avatar" title="Superuser">SU</div>
+      </div>
+    </header>
+
+    {% block main %}
+    <main class="content">
+
+      <div class="page-head">
+        <div>
+          <h1>Good morning, Administrator</h1>
+          <p>Sunday, 18 October 2026. Here is how the school is doing today.</p>
+        </div>
+        <div class="btn-row">
+          <a href="#" class="btn">Export report</a>
+          <a href="#" class="btn btn-primary">Add new student</a>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <section class="stats" aria-label="Key numbers">
+        <article class="card stat">
+          <span class="label">Total students</span>
+          <span class="value">1,248</span>
+          <span class="note"><span class="up">+36</span> since last term</span>
+        </article>
+        <article class="card stat">
+          <span class="label">Teaching staff</span>
+          <span class="value">74</span>
+          <span class="note">6 on leave this week</span>
+        </article>
+        <article class="card stat">
+          <span class="label">Fees collected</span>
+          <span class="value">82%</span>
+          <span class="note">TZS 412M of TZS 502M billed</span>
+        </article>
+        <article class="card stat">
+          <span class="label">Overdue invoices</span>
+          <span class="value">97</span>
+          <span class="note"><span class="down">+11</span> since last week</span>
+        </article>
+      </section>
+
+      <!-- Fees chart + Attendance -->
+      <section class="grid-2">
+        <article class="card">
+          <div class="card-head">
+            <h2>Fee collection by month</h2>
+            <a href="#">Open finance report</a>
+          </div>
+          <div class="chart" role="img" aria-label="Bar chart of monthly fee collection. Peaks in January and July.">
+            <div class="bar"><i style="height:42%"></i></div>
+            <div class="bar"><i style="height:35%"></i></div>
+            <div class="bar"><i style="height:30%"></i></div>
+            <div class="bar"><i style="height:55%"></i></div>
+            <div class="bar"><i style="height:48%"></i></div>
+            <div class="bar"><i style="height:44%"></i></div>
+            <div class="bar"><i style="height:90%"></i></div>
+            <div class="bar"><i style="height:62%"></i></div>
+            <div class="bar"><i style="height:50%"></i></div>
+            <div class="bar"><i style="height:58%"></i></div>
+            <div class="bar"><i class="partial" style="height:28%"></i></div>
+            <div class="bar"><i class="partial" style="height:8%"></i></div>
+          </div>
+          <div class="chart-labels">
+            <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+            <span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+          </div>
+          <div class="legend">
+            <span><b style="background:var(--teal)"></b>Collected</span>
+            <span><b style="background:var(--amber)"></b>Expected, not yet due</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <h2>Today's attendance</h2>
+            <a href="#">View by class</a>
+          </div>
+          <div class="ring-wrap">
+            <div class="ring" role="img" aria-label="91 percent of students present"><span>91%</span></div>
+            <ul class="ring-list">
+              <li><span><i class="dot" style="background:var(--teal)"></i>Present</span><b>1,136</b></li>
+              <li><span><i class="dot" style="background:var(--amber)"></i>Late or excused</span><b>62</b></li>
+              <li><span><i class="dot" style="background:var(--red)"></i>Absent</span><b>50</b></li>
+            </ul>
+          </div>
+          <br>
+          <p style="font-size:14px;color:var(--ink-soft)">Lowest turnout: Form 2B at 78%. Teachers in 3 classes have not submitted attendance yet.</p>
+        </article>
+      </section>
+
+      <!-- Admissions table + Notices -->
+      <section class="grid-2">
+        <article class="card">
+          <div class="card-head">
+            <h2>Admission requests</h2>
+            <a href="#">See all 14</a>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Applicant</th><th>Applying to</th><th>Date</th><th>Status</th><th>Action</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div class="person"><div class="avatar">AM</div><div>Amina Mushi<small>Parent: J. Mushi</small></div></div></td>
+                  <td>Form 1</td><td>16 Oct</td>
+                  <td><span class="badge b-wait">Pending</span></td>
+                  <td><a href="#" class="btn">Review</a></td>
+                </tr>
+                <tr>
+                  <td><div class="person"><div class="avatar">DK</div><div>Daudi Kileo<small>Parent: R. Kileo</small></div></div></td>
+                  <td>Standard 5</td><td>15 Oct</td>
+                  <td><span class="badge b-info">Interview set</span></td>
+                  <td><a href="#" class="btn">Open</a></td>
+                </tr>
+                <tr>
+                  <td><div class="person"><div class="avatar">NS</div><div>Neema Salim<small>Parent: F. Salim</small></div></div></td>
+                  <td>Form 3</td><td>14 Oct</td>
+                  <td><span class="badge b-ok">Approved</span></td>
+                  <td><a href="#" class="btn">Enroll</a></td>
+                </tr>
+                <tr>
+                  <td><div class="person"><div class="avatar">BM</div><div>Baraka Mwita<small>Parent: E. Mwita</small></div></div></td>
+                  <td>Standard 2</td><td>12 Oct</td>
+                  <td><span class="badge b-bad">Missing documents</span></td>
+                  <td><a href="#" class="btn">Contact</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <h2>Needs your attention</h2>
+            <span>Today</span>
+          </div>
+          <ul class="feed">
+            <li class="alert">
+              <div><p>Backup failed last night at 02:00.</p><small>System · 8 hours ago</small></div>
+            </li>
+            <li class="warn">
+              <div><p>Form 4 exam timetable has a clash on 3 November.</p><small>Academics · 2 hours ago</small></div>
+            </li>
+            <li class="warn">
+              <div><p>Payroll for October is ready to approve.</p><small>Finance · Yesterday</small></div>
+            </li>
+            <li>
+              <div><p>New teacher account created for Mr. Hassan.</p><small>Users · Yesterday</small></div>
+            </li>
+          </ul>
+        </article>
+      </section>
+
+      <!-- Three small cards -->
+      <section class="grid-3">
+        <article class="card">
+          <div class="card-head"><h2>Students by level</h2><span>1,248 total</span></div>
+          <div class="meter">
+            <div class="meter-row">
+              <div class="top"><span>Nursery and pre-primary</span><b>142</b></div>
+              <div class="track"><i class="amber" style="width:11%"></i></div>
+            </div>
+            <div class="meter-row">
+              <div class="top"><span>Primary (Std 1–7)</span><b>536</b></div>
+              <div class="track"><i style="width:43%"></i></div>
+            </div>
+            <div class="meter-row">
+              <div class="top"><span>Lower secondary (Form 1–2)</span><b>310</b></div>
+              <div class="track"><i class="blue" style="width:25%"></i></div>
+            </div>
+            <div class="meter-row">
+              <div class="top"><span>Upper secondary (Form 3–4)</span><b>260</b></div>
+              <div class="track"><i class="red" style="width:21%"></i></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-head"><h2>Quick actions</h2></div>
+          <div class="shortcuts">
+            <a href="#">Add teacher<small>Create account and assign classes</small></a>
+            <a href="#">Create class<small>Set section and class teacher</small></a>
+            <a href="#">Send notice<small>Email and SMS to parents</small></a>
+            <a href="#">Record payment<small>Cash, bank or mobile money</small></a>
+            <a href="#">Publish results<small>Release marks for a term</small></a>
+            <a href="#">Manage roles<small>Permissions for each user type</small></a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-head"><h2>System health</h2><a href="#">Audit log</a></div>
+          <ul class="status">
+            <li><span>Database</span><span class="badge b-ok">Online</span></li>
+            <li><span>Last backup</span><span class="badge b-bad">Failed</span></li>
+            <li><span>SMS gateway</span><span class="badge b-ok">Connected</span></li>
+            <li><span>Email service</span><span class="badge b-ok">Connected</span></li>
+            <li><span>Active users now</span><b>63</b></li>
+            <li><span>Storage used</span><b>14.2 GB of 50 GB</b></li>
+          </ul>
+        </article>
+      </section>
+
+      <!-- Users table -->
+      <section class="card">
+        <div class="card-head">
+          <h2>Recently active users</h2>
+          <a href="#">Manage users and roles</a>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Name</th><th>Role</th><th>Department</th><th>Last active</th><th>Account</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="person"><div class="avatar">GL</div><div>Grace Lyimo<small>grace@sunriseacademy.example</small></div></div></td>
+                <td>Head teacher</td><td>Administration</td><td>5 minutes ago</td>
+                <td><span class="badge b-ok">Active</span></td>
+              </tr>
+              <tr>
+                <td><div class="person"><div class="avatar">PN</div><div>Peter Ngowi<small>peter@sunriseacademy.example</small></div></div></td>
+                <td>Accountant</td><td>Finance</td><td>22 minutes ago</td>
+                <td><span class="badge b-ok">Active</span></td>
+              </tr>
+              <tr>
+                <td><div class="person"><div class="avatar">SH</div><div>Salma Hassan<small>salma@sunriseacademy.example</small></div></div></td>
+                <td>Teacher</td><td>Sciences</td><td>1 hour ago</td>
+                <td><span class="badge b-ok">Active</span></td>
+              </tr>
+              <tr>
+                <td><div class="person"><div class="avatar">MK</div><div>Michael Kweka<small>michael@sunriseacademy.example</small></div></div></td>
+                <td>Librarian</td><td>Library</td><td>3 days ago</td>
+                <td><span class="badge b-wait">Password reset</span></td>
+              </tr>
+              <tr>
+                <td><div class="person"><div class="avatar">RT</div><div>Rehema Tarimo<small>rehema@sunriseacademy.example</small></div></div></td>
+                <td>Teacher</td><td>Languages</td><td>2 weeks ago</td>
+                <td><span class="badge b-bad">Suspended</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+    {% endblock main %}
+
+    <footer>School management system · Superuser dashboard · Version 1.0</footer>
+  </div>
+</div>
+
+</body>
+</html>

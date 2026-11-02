@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in | Sunrise Academy</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="{% static "account/general.css" %}">
+<link rel="stylesheet" href="{% static "account/components.css" %}">
+<style>
+  /* Login page specific styles. Base styles come from style.css and components.css */
+  .auth { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; }
+
+  .auth-side { background: var(--side); color: var(--side-text); padding: 48px; display: flex; flex-direction: column; justify-content: space-between; gap: 40px; }
+  .auth-side h2 { color: #fff; font-size: 34px; line-height: 1.2; letter-spacing: -.02em; max-width: 14em; }
+  .auth-side p { margin-top: 14px; max-width: 30em; font-size: 16px; }
+  .perks { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 14px; }
+  .perks li { display: flex; gap: 12px; align-items: baseline; color: #fff; font-size: 15px; }
+  .perks li::before { content: "\2713"; flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--amber); color: #3a2a08; font-size: 13px; font-weight: 800; display: grid; place-items: center; }
+  .auth-side small { font-size: 13px; color: #7f9aa4; }
+
+  .auth-main { display: grid; place-items: center; padding: 32px 20px; }
+  .auth-card { width: min(440px, 100%); }
+  .auth-card h1 { font-size: 28px; line-height: 1.2; letter-spacing: -.01em; }
+  .auth-card .lead { color: var(--ink-soft); margin: 6px 0 26px; }
+
+  .fields { display: grid; gap: 18px; }
+  .fields label { display: grid; gap: 6px; font-size: 14px; font-weight: 600; }
+  .fields input[type="email"], .fields input[type="password"] { padding: 11px 14px; font-size: 15px; background: var(--card); }
+  .fields input:user-invalid { border-color: var(--red); }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 14px; }
+  .row label { display: flex; align-items: center; gap: 8px; font-weight: 400; }
+  .row a { color: var(--teal); font-weight: 600; text-decoration: underline; }
+  .submit { width: 100%; padding: 12px 16px; font-size: 16px; margin-top: 6px; }
+  .switch { text-align: center; margin-top: 22px; font-size: 14px; color: var(--ink-soft); }
+  .switch a { color: var(--teal); font-weight: 600; text-decoration: underline; }
+
+  .alert-error { background: var(--red-soft); color: var(--red); padding: 12px 14px; border-radius: 8px; font-size: 14px; font-weight: 600; margin-bottom: 18px; }
+
+  @media (max-width: 860px) {
+    .auth { grid-template-columns: 1fr; }
+    .auth-side { padding: 28px 24px; gap: 20px; }
+    .auth-side h2 { font-size: 26px; }
+    .perks, .auth-side small { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="auth">
+
+  <!-- ============ Left: welcome panel ============ -->
+  <section class="auth-side">
+    <a class="brand" href="#">
+      <div class="brand-mark">S</div>
+      <div><strong>Sunrise Academy</strong><span>School management system</span></div>
+    </a>
+
+    <div>
+      <h2>Welcome back</h2>
+      <p>Sign in to open your dashboard. Students, teachers and school administrators all sign in here.</p>
+      <ul class="perks">
+        <li>Students: timetable, results and fees</li>
+        <li>Teachers: classes, attendance and marks</li>
+        <li>Administrators: the whole school in one place</li>
+      </ul>
+    </div>
+
+    <small>Need help? Contact the school office.</small>
+  </section>
+
+  <!-- ============ Right: form ============ -->
+  <main class="auth-main">
+    <div class="auth-card">
+      <h1>Sign in</h1>
+      <p class="lead">Enter your email and password.</p>
+
+      <!-- If sign in fails, your backend can show a message here. Keep it general so it does not reveal which part was wrong:
+           <div class="alert-error" role="alert">The email or password is not correct.</div> -->
+
+      <form class="fields" action="{% url "login_page" %}" method="post">
+        {% csrf_token %}
+
+        <label>Email address
+          <input type="email" name="email" required maxlength="150" autocomplete="username" placeholder="name@example.com" autofocus>
+        </label>
+
+        <label>Password
+          <input type="password" name="password" required maxlength="128" autocomplete="current-password">
+        </label>
+
+        <div class="row">
+          <label><input type="checkbox" name="remember" value="1"> Keep me signed in</label>
+          <a href="forgot-password.html">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary submit">Sign in</button>
+      </form>
+
+      <p class="switch">New here? <a href="register.html">Create an account</a></p>
+    </div>
+  </main>
+
+</div>
+
+</body>
+</html>

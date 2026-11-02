@@ -1,0 +1,584 @@
+{% extends "account/admin.html" %}
+{% load static %}
+{% block title %}student dashboard{% endblock title %}
+{% block styles %}
+<link rel="stylesheet" href="{% static "student/student_dashboard.css" %}">
+{% endblock styles %}
+{% block main %}
+    <main class="content">
+
+      <div class="page-head">
+        <div>
+          <h1>Students</h1>
+          <p><a href="superuser-dashboard.html" style="text-decoration:underline">Dashboard</a> / Students</p>
+        </div>
+        <div class="btn-row">
+          <a href="#" class="btn">Import from CSV</a>
+          <a href="#" class="btn">Export list</a>
+          <a href="#add-student" class="btn btn-primary">Add student</a>
+        </div>
+      </div>
+
+      <section class="stats" aria-label="Student numbers">
+        <article class="card stat"><span class="label">All students</span><span class="value">1,248</span><span class="note">Across 28 classes</span></article>
+        <article class="card stat"><span class="label">Boys</span><span class="value">631</span><span class="note">51% of students</span></article>
+        <article class="card stat"><span class="label">Girls</span><span class="value">617</span><span class="note">49% of students</span></article>
+        <article class="card stat"><span class="label">With unpaid fees</span><span class="value">212</span><span class="note"><span class="down">97</span> are overdue</span></article>
+      </section>
+
+      <section class="card" id="list">
+        <div class="card-head"><h2>Student list</h2><span>Showing 5 of 1,248</span></div>
+
+        <!-- Filters: submit to your backend with GET -->
+        <form class="toolbar" action="students.html" method="get">
+          <label class="field grow">Search
+            <input type="search" name="q" placeholder="Name or admission number">
+          </label>
+          <label class="field">Class
+            <select name="class">
+              <option value="">All classes</option>
+              <option>Standard 2</option><option>Standard 5</option>
+              <option>Form 1</option><option>Form 2</option><option>Form 3</option><option>Form 4</option>
+            </select>
+          </label>
+          <label class="field">Gender
+            <select name="gender"><option value="">All</option><option>Female</option><option>Male</option></select>
+          </label>
+          <label class="field">Status
+            <select name="status"><option value="">All</option><option>Active</option><option>Suspended</option><option>Transferred</option><option>Graduated</option></select>
+          </label>
+          <button class="btn btn-primary" type="submit">Apply filters</button>
+          <a class="btn" href="students.html">Clear</a>
+        </form>
+
+        <div class="bulk">
+          <span>Select students to act on several at once.</span>
+          <div class="btn-row">
+            <a href="#" class="btn btn-sm">Promote to next class</a>
+            <a href="#" class="btn btn-sm">Print ID cards</a>
+            <a href="#" class="btn btn-sm">Send notice</a>
+            <a href="#" class="btn btn-sm btn-danger">Delete selected</a>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th><input type="checkbox" aria-label="Select all students"></th>
+                <th>Student</th><th>Admission no.</th><th>Class</th><th>Gender</th>
+                <th>Guardian</th><th>Fees</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for student_info in student_list %}
+              <tr>
+                <td><input type="checkbox" aria-label="Select {{student_info.first_name}} {{student_info.last_name}}"></td>
+                <td><div class="person"><div class="avatar">{{student_info.first_name|first}}{{student_info.last_name|first}}</div><div>{{student_info.first_name}} {{student_info.last_name}}<small>amina.m@student.example</small></div></div></td>
+                <td>ST-2026-0101</td><td>{{student_info.student_class}}</td><td>{{student_info.gender}}</td><td>{{student_info.parent.full_name}}</td>
+                <td><span class="badge b-ok">Paid</span></td>
+                <td><span class="badge b-ok">Active</span></td>
+                <td><div class="row-actions">
+                  <a href="#view-{{student_info.id}}" class="btn btn-sm">View</a>
+                  {% comment %} <a href="#edit-{{student_info.id}}" class="btn btn-sm">Edit</a> {% endcomment %}
+                  <a href="#add-student-{{student_info.id}}" class="btn btn-sm">Edit</a>
+                  <a href="#delete-{{student_info.id}}" class="btn btn-sm btn-danger">Delete</a>
+                </div></td>
+              </tr>
+              {% endfor %}
+              <tr>
+                <td><input type="checkbox" aria-label="Select Daudi Kileo"></td>
+                <td><div class="person"><div class="avatar">DK</div><div>Daudi Kileo<small>daudi.k@student.example</small></div></div></td>
+                <td>ST-2026-0214</td><td>Standard 5 B</td><td>Male</td><td>Rehema Kileo</td>
+                <td><span class="badge b-wait">Partial</span></td>
+                <td><span class="badge b-ok">Active</span></td>
+                <td><div class="row-actions">
+                  <a href="#view-2" class="btn btn-sm">View</a>
+                  <a href="#edit-2" class="btn btn-sm">Edit</a>
+                  <a href="#delete-2" class="btn btn-sm btn-danger">Delete</a>
+                </div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" aria-label="Select Neema Salim"></td>
+                <td><div class="person"><div class="avatar">NS</div><div>Neema Salim<small>neema.s@student.example</small></div></div></td>
+                <td>ST-2026-0377</td><td>Form 3 A</td><td>Female</td><td>Fatuma Salim</td>
+                <td><span class="badge b-ok">Paid</span></td>
+                <td><span class="badge b-ok">Active</span></td>
+                <td><div class="row-actions">
+                  <a href="#view-3" class="btn btn-sm">View</a>
+                  <a href="#edit-3" class="btn btn-sm">Edit</a>
+                  <a href="#delete-3" class="btn btn-sm btn-danger">Delete</a>
+                </div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" aria-label="Select Baraka Mwita"></td>
+                <td><div class="person"><div class="avatar">BM</div><div>Baraka Mwita<small>baraka.m@student.example</small></div></div></td>
+                <td>ST-2026-0452</td><td>Standard 2 A</td><td>Male</td><td>Elias Mwita</td>
+                <td><span class="badge b-bad">Overdue</span></td>
+                <td><span class="badge b-wait">Suspended</span></td>
+                <td><div class="row-actions">
+                  <a href="#view-4" class="btn btn-sm">View</a>
+                  <a href="#edit-4" class="btn btn-sm">Edit</a>
+                  <a href="#delete-4" class="btn btn-sm btn-danger">Delete</a>
+                </div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" aria-label="Select Zawadi Komba"></td>
+                <td><div class="person"><div class="avatar">ZK</div><div>Zawadi Komba<small>zawadi.k@student.example</small></div></div></td>
+                <td>ST-2026-0519</td><td>Form 2 B</td><td>Female</td><td>Anna Komba</td>
+                <td><span class="badge b-wait">Partial</span></td>
+                <td><span class="badge b-ok">Active</span></td>
+                <td><div class="row-actions">
+                  <a href="#view-5" class="btn btn-sm">View</a>
+                  <a href="#edit-5" class="btn btn-sm">Edit</a>
+                  <a href="#delete-5" class="btn btn-sm btn-danger">Delete</a>
+                </div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pager">
+          <span>Page 1 of 250</span>
+          <nav aria-label="Pagination">
+            <a href="#list">Previous</a>
+            <a href="#list" aria-current="page">1</a>
+            <a href="#list">2</a>
+            <a href="#list">3</a>
+            <a href="#list">Next</a>
+          </nav>
+        </div>
+      </section>
+    </main>
+
+    <!-- =====================================================
+     ADD STUDENT
+     ===================================================== -->
+<div class="modal" id="add-student" role="dialog" aria-label="Add student">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box" action="{% url "student" %}" method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    <div class="modal-head">
+      <div><h2>Add new student</h2><p>Fill in the details below. Fields marked * are required.
+
+      </p></div>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+
+    <p class="form-section">Student details</p>
+    <div class="form-grid">
+      <label>First name *<input name="first_name" required></label>
+      <label>Last name *<input name="last_name" required></label>
+      <label>Gender *<select name="gender" required><option value="">Choose</option><option>Female</option><option>Male</option></select></label>
+      <label>Date of birth *<input type="date" name="date_of_birth" required></label>
+      <label>Class *<select name="student_class" required><option value="">Choose</option><option>Standard 2</option><option>Standard 5</option><option>Form 1</option><option>Form 2</option><option>Form 3</option><option>Form 4</option></select></label>
+      <label>Section<select name="section"><option>A</option><option>B</option><option>C</option></select></label>
+      <label>Admission date<input type="date" name="admission_date"></label>
+      <label>Photo<input type="file" name="photo" accept="image/*" ></label>
+      <label class="full">Home address<textarea name="home_address"></textarea></label>
+    </div>
+
+    <p class="form-section">Parent or guardian</p>
+    <div class="form-grid">
+      <label>Full name *<input name="full_name" required></label>
+      <label>Relationship<select name="relationship"><option>Mother</option><option>Father</option><option>Guardian</option></select></label>
+      <label>Phone number *<input type="number" name="phone_number" required></label>
+      <label>Email<input type="email" name="email"></label>
+    </div>
+
+    <p class="form-section">Health and notes</p>
+    <div class="form-grid">
+      <label>Blood group<select name="blood_group"><option value="">Unknown</option><option>A</option><option>B</option><option>AB</option><option>O</option></select></label>
+      <label>Allergies or conditions<input name="allergies"></label>
+    </div>
+
+    <div class="modal-foot">
+      <a href="#list" class="btn">Cancel</a>
+      <button type="submit" class="btn btn-primary">Save student</button>
+    </div>
+  </form>
+</div>
+
+<!-- =====================================================
+     STUDENT 1: Amina Mushi
+     ===================================================== -->
+     {% for student_info in student_list %}
+<div class="modal" id="view-{{student_info.id}}" role="dialog" aria-label="{{student_info.first_name}} {{student_info.last_name}} details">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <div class="modal-box">
+    <div class="modal-head"><h2>Student details</h2><a class="close" href="#list" aria-label="Close">&times;</a></div>
+    <div class="profile">
+      <div class="avatar">{{student_info.first_name|first}}{{student_info.last_name|first}}</div>
+      <div><h3>{{student_info.first_name}} {{student_info.last_name}}</h3><p>ST-2026-0101 · {{student_info.first_name.student_class}}</p></div>
+      <span class="badge b-ok" style="margin-left:auto">Active</span>
+    </div>
+    <dl class="info">
+      <div><dt>Gender</dt><dd>{{student_info.gender}}</dd></div>
+      <div><dt>Date of birth</dt><dd>{{student_info.date_of_birth}}</dd></div>
+      <div><dt>Admitted</dt><dd>{{student_info.admission_date}}</dd></div>
+      <div><dt>Guardian</dt><dd>{{student_info.last_name}} (Father)</dd></div>
+      <div><dt>Guardian phone</dt><dd>+{{student_info.parent.phone_number}}</dd></div>
+      <div><dt>Guardian email</dt><dd>{{student_info.parent.email}}</dd></div>
+      <div><dt>Address</dt><dd>{{student_info.home_address}}</dd></div>
+      <div><dt>Blood group</dt><dd>{{student_info.blood_group}}</dd></div>
+      <div><dt>Health notes</dt><dd>{{student_info.allergies}}</dd></div>
+    </dl>
+    <p class="form-section">This term</p>
+    <div class="mini-stats">
+      <div><b>96%</b><span>Attendance</span></div>
+      <div><b>82%</b><span>Average score</span></div>
+      <div><b>TZS 0</b><span>Fees balance</span></div>
+    </div>
+    <div class="modal-foot">
+      <a href="#" class="btn">Print ID card</a>
+      <a href="#" class="btn">View report card</a>
+      <a href="#edit-{{student_info.id}}" class="btn btn-primary">Edit student</a>
+    </div>
+  </div>
+</div>
+
+{% comment %} #editing add student {% endcomment %}
+
+<div class="modal" id="add-student-{{student_info.id}}" role="dialog" aria-label="Add student">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box" action="{% url "edit_student" student_info.id %}" method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    <div class="modal-head">
+      <div><h2>Edit student({{student_info.first_name}})</h2><p>Fill in the details below. Fields marked * are required.
+
+      </p></div>
+      <a class="close" href="#list" aria-label="Close">&times;</a>
+    </div>
+
+    <p class="form-section">Student details</p>
+    <div class="form-grid">
+      <label>First name *<input name="first_name" required value="{{student_info.first_name}}"></label>
+      <label>Last name *<input name="last_name" required value="{{student_info.last_name}}"></label>
+      <label>Gender *<select name="gender" required><option value="{{student_info.gender}}">{{student_info.gender}}</option><option>Female</option><option>Male</option></select></label>
+      <label>Date of birth *<input type="date" name="date_of_birth" required value="{{student_info.date_of_birth|date:'Y-m-d'}}"></label>
+      <label>Class *<select name="student_class" required><option>{{student_info.student_class}}</option><option>Standard 2</option><option>Standard 5</option><option>Form 1</option><option>Form 2</option><option>Form 3</option><option>Form 4</option></select></label>
+      <label>Section<select name="section" value="{{student_info.section}}"><option>A</option><option>B</option><option>C</option></select></label>
+      <label>Admission date<input type="date" name="admission_date" value="{{student_info.admission_date|date:'Y-m-d'}}"></label>
+      <label>Photo<input type="file" name="photo" accept="image/*" value="{{student_info.photo.name|cut:"images/A1.png"}}"></label>
+      <label class="full">Home address<textarea name="home_address" value="{{student_info.home_address}}">{{student_info.home_address}}</textarea></label>
+    </div>
+
+    <p class="form-section">Parent or guardian</p>
+    <div class="form-grid">
+      <label>Full name *<input name="full_name" required value="{{student_info.parent.full_name}}"></label>
+      <label>Relationship<select name="relationship"><option>Mother</option><option>Father</option><option>Guardian</option></select></label>
+      <label>Phone number *<input type="number" name="phone_number" required value="{{student_info.parent.phone_number}}"></label>
+      <label>Email<input type="email" name="email" value="{{student_info.parent.email}}"></label>
+    </div>
+
+    <p class="form-section">Health and notes</p>
+    <div class="form-grid">
+      <label>Blood group<select name="blood_group"><option value="{{student_info.blood_group}}">{{student_info.blood_group}}</option><option>A</option><option>B</option><option>AB</option><option>O</option></select></label>
+      <label>Allergies or conditions<input name="allergies" value="{{student_info.allergies}}"></label>
+    </div>
+
+    <div class="modal-foot">
+      <a href="#list" class="btn">Cancel</a>
+      <button type="submit" class="btn btn-primary">Save Edit</button>
+    </div>
+  </form>
+</div>
+{% comment %} #end editing add student {% endcomment %}
+
+{% comment %} <div class="modal" id="edit-{{student_info.id}}" role="dialog" aria-label="Edit {{student_info.first_name}} {{student_info.last_name}}">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box" action="{% url "edit_student" student_info.id %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="modal-head"><div><h2>Edit student</h2><p>ST-2026-0101</p></div><a class="close" href="#list" aria-label="Close">&times;</a></div>
+    <div class="form-grid">
+      <label>First name *<input name="first_name" value="{{student_info.first_name}}" required></label>
+      <label>Last name *<input name="last_name" value="{{student_info.last_name}}" required></label>
+      <label>Gender<select name="gender"><option selected>{{student_info.gender}}</option><option>Male</option><option>Female</option></select></label>
+      <label>Date of birth<input type="date" name="date_of_birth" value="{{student_info.date_of_birth}}"></label>
+      <label>Class<select name="student_class"><option>{{student_info.student_class}}</option><option selected>Form 1</option><option>Form 2</option><option>Form 3</option></select></label>
+      <label>Status<select name="status"><option selected>Active</option><option>Suspended</option><option>Transferred</option><option>Graduated</option></select></label>
+      <label>Guardian name<input name="full_name" value="{{student_info.parent.full_name}}"></label>
+      <label>Guardian phone<input type="tel" name="phone_number" value="+{{student_info.parent.phone_number}}"></label>
+      <label class="full">Home address<textarea name="home_address">{{student_info.home_address}}</textarea></label>
+    </div>
+    <div class="modal-foot"><a href="#list" class="btn">Cancel</a><button type="submit" class="btn btn-primary">Save changes</button></div>
+  </form>
+</div> {% endcomment %}
+
+<div class="modal" id="delete-{{student_info.id}}" role="dialog" aria-label="Delete {{student_info.first_name}} {{student_info.last_name}}">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box small" action="{% url "delete_student" student_info.id %}" method="post">
+    {% csrf_token %}
+    <div class="modal-head"><h2>Delete {{student_info.first_name}} {{student_info.last_name}}?</h2><a class="close" href="#list" aria-label="Close">&times;</a></div>
+    <p>This removes the student record, attendance and results. This cannot be undone.</p>
+    <div class="warning-box">Consider changing the status to Transferred or Graduated to keep the history.</div>
+    <div class="modal-foot"><a href="#list" class="btn">Keep student</a><button type="submit" class="btn btn-danger-solid">Delete student</button></div>
+  </form>
+</div>
+  {% endfor %}
+<!-- =====================================================
+     STUDENT 2: Daudi Kileo
+     ===================================================== -->
+<div class="modal" id="view-2" role="dialog" aria-label="Daudi Kileo details">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <div class="modal-box">
+    <div class="modal-head"><h2>Student details</h2><a class="close" href="#list" aria-label="Close">&times;</a></div>
+    <div class="profile">
+      <div class="avatar">DK</div>
+      <div><h3>Daudi Kileo</h3><p>ST-2026-0214 · Standard 5 B</p></div>
+      <span class="badge b-ok" style="margin-left:auto">Active</span>
+    </div>
+    <dl class="info">
+      <div><dt>Gender</dt><dd>Male</dd></div>
+      <div><dt>Date of birth</dt><dd>2 August 2015</dd></div>
+      <div><dt>Admitted</dt><dd>15 January 2022</dd></div>
+      <div><dt>Guardian</dt><dd>Rehema Kileo (Mother)</dd></div>
+      <div><dt>Guardian phone</dt><dd>+255 713 000 214</dd></div>
+      <div><dt>Guardian email</dt><dd>r.kileo@example.com</dd></div>
+      <div><dt>Address</dt><dd>Kinondoni, Dar es Salaam</dd></div>
+      <div><dt>Blood group</dt><dd>A</dd></div>
+      <div><dt>Health notes</dt><dd>Mild asthma</dd></div>
+    </dl>
+    <p class="form-section">This term</p>
+    <div class="mini-stats">
+      <div><b>92%</b><span>Attendance</span></div>
+      <div><b>74%</b><span>Average score</span></div>
+      <div><b>TZS 150,000</b><span>Fees balance</span></div>
+    </div>
+    <div class="modal-foot">
+      <a href="#" class="btn">Print ID card</a>
+      <a href="#" class="btn">View report card</a>
+      <a href="#edit-2" class="btn btn-primary">Edit student</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="edit-2" role="dialog" aria-label="Edit Daudi Kileo">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box" action="/students/2/edit" method="post">
+    <div class="modal-head"><div><h2>Edit student</h2><p>ST-2026-0214</p></div><a class="close" href="#list" aria-label="Close">&times;</a></div>
+    <div class="form-grid">
+      <label>First name *<input name="first_name" value="Daudi" required></label>
+      <label>Last name *<input name="last_name" value="Kileo" required></label>
+      <label>Gender<select name="gender"><option>Female</option><option selected>Male</option></select></label>
+      <label>Date of birth<input type="date" name="dob" value="2015-08-02"></label>
+      <label>Class<select name="class"><option>Standard 2</option><option selected>Standard 5</option><option>Form 1</option><option>Form 2</option></select></label>
+      <label>Status<select name="status"><option selected>Active</option><option>Suspended</option><option>Transferred</option><option>Graduated</option></select></label>
+      <label>Guardian name<input name="guardian_name" value="Rehema Kileo"></label>
+      <label>Guardian phone<input type="tel" name="guardian_phone" value="+255 713 000 214"></label>
+      <label class="full">Home address<textarea name="address">Kinondoni, Dar es Salaam</textarea></label>
+    </div>
+    <div class="modal-foot"><a href="#list" class="btn">Cancel</a><button type="submit" class="btn btn-primary">Save changes</button></div>
+  </form>
+</div>
+
+<div class="modal" id="delete-2" role="dialog" aria-label="Delete Daudi Kileo">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box small" action="/students/2/delete" method="post">
+    <div class="modal-head"><h2>Delete Daudi Kileo?</h2><a class="close" href="#list" aria-label="Close">&times;</a></div>
+    <p>This removes the student record, attendance and results. This cannot be undone.</p>
+    <div class="warning-box">This student still has an unpaid fees balance of TZS 150,000.</div>
+    <div class="modal-foot"><a href="#list" class="btn">Keep student</a><button type="submit" class="btn btn-danger-solid">Delete student</button></div>
+  </form>
+</div>
+
+<!-- =====================================================
+     STUDENT 3: Neema Salim
+     ===================================================== -->
+<div class="modal" id="view-3" role="dialog" aria-label="Neema Salim details">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <div class="modal-box">
+    <div class="modal-head"><h2>Student details</h2><a class="close" href="#list" aria-label="Close">&times;</a></div>
+    <div class="profile">
+      <div class="avatar">NS</div>
+      <div><h3>Neema Salim</h3><p>ST-2026-0377 · Form 3 A</p></div>
+      <span class="badge b-ok" style="margin-left:auto">Active</span>
+    </div>
+    <dl class="info">
+      <div><dt>Gender</dt><dd>Female</dd></div>
+      <div><dt>Date of birth</dt><dd>9 November 2009</dd></div>
+      <div><dt>Admitted</dt><dd>10 January 2024</dd></div>
+      <div><dt>Guardian</dt><dd>Fatuma Salim (Mother)</dd></div>
+      <div><dt>Guardian phone</dt><dd>+255 754 000 377</dd></div>
+      <div><dt>Guardian email</dt><dd>f.salim@example.com</dd></div>
+      <div><dt>Address</dt><dd>Mbezi Beach, Dar es Salaam</dd></div>
+      <div><dt>Blood group</dt><dd>B</dd></div>
+      <div><dt>Health notes</dt><dd>None</dd></div>
+    </dl>
+    <p class="form-section">This term</p>
+    <div class="mini-stats">
+      <div><b>98%</b><span>Attendance</span></div>
+      <div><b>91%</b><span>Average score</span></div>
+      <div><b>TZS 0</b><span>Fees balance</span></div>
+    </div>
+    <div class="modal-foot">
+      <a href="#" class="btn">Print ID card</a>
+      <a href="#" class="btn">View report card</a>
+      <a href="#edit-3" class="btn btn-primary">Edit student</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="edit-3" role="dialog" aria-label="Edit Neema Salim">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box" action="/students/3/edit" method="post">
+    <div class="modal-head"><div><h2>Edit student</h2><p>ST-2026-0377</p></div><a class="close" href="#list" aria-label="Close">&times;</a></div>
+    <div class="form-grid">
+      <label>First name *<input name="first_name" value="Neema" required></label>
+      <label>Last name *<input name="last_name" value="Salim" required></label>
+      <label>Gender<select name="gender"><option selected>Female</option><option>Male</option></select></label>
+      <label>Date of birth<input type="date" name="dob" value="2009-11-09"></label>
+      <label>Class<select name="class"><option>Form 1</option><option>Form 2</option><option selected>Form 3</option><option>Form 4</option></select></label>
+      <label>Status<select name="status"><option selected>Active</option><option>Suspended</option><option>Transferred</option><option>Graduated</option></select></label>
+      <label>Guardian name<input name="guardian_name" value="Fatuma Salim"></label>
+      <label>Guardian phone<input type="tel" name="guardian_phone" value="+255 754 000 377"></label>
+      <label class="full">Home address<textarea name="address">Mbezi Beach, Dar es Salaam</textarea></label>
+    </div>
+    <div class="modal-foot"><a href="#list" class="btn">Cancel</a><button type="submit" class="btn btn-primary">Save changes</button></div>
+  </form>
+</div>
+
+<div class="modal" id="delete-3" role="dialog" aria-label="Delete Neema Salim">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box small" action="/students/3/delete" method="post">
+    <div class="modal-head"><h2>Delete Neema Salim?</h2><a class="close" href="#list" aria-label="Close">&times;</a></div>
+    <p>This removes the student record, attendance and results. This cannot be undone.</p>
+    <div class="warning-box">Consider changing the status to Transferred or Graduated to keep the history.</div>
+    <div class="modal-foot"><a href="#list" class="btn">Keep student</a><button type="submit" class="btn btn-danger-solid">Delete student</button></div>
+  </form>
+</div>
+
+<!-- =====================================================
+     STUDENT 4: Baraka Mwita
+     ===================================================== -->
+<div class="modal" id="view-4" role="dialog" aria-label="Baraka Mwita details">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <div class="modal-box">
+    <div class="modal-head"><h2>Student details</h2><a class="close" href="#list" aria-label="Close">&times;</a></div>
+    <div class="profile">
+      <div class="avatar">BM</div>
+      <div><h3>Baraka Mwita</h3><p>ST-2026-0452 · Standard 2 A</p></div>
+      <span class="badge b-wait" style="margin-left:auto">Suspended</span>
+    </div>
+    <dl class="info">
+      <div><dt>Gender</dt><dd>Male</dd></div>
+      <div><dt>Date of birth</dt><dd>21 June 2018</dd></div>
+      <div><dt>Admitted</dt><dd>9 January 2025</dd></div>
+      <div><dt>Guardian</dt><dd>Elias Mwita (Father)</dd></div>
+      <div><dt>Guardian phone</dt><dd>+255 765 000 452</dd></div>
+      <div><dt>Guardian email</dt><dd>e.mwita@example.com</dd></div>
+      <div><dt>Address</dt><dd>Temeke, Dar es Salaam</dd></div>
+      <div><dt>Blood group</dt><dd>Unknown</dd></div>
+      <div><dt>Health notes</dt><dd>None</dd></div>
+    </dl>
+    <p class="form-section">This term</p>
+    <div class="mini-stats">
+      <div><b>61%</b><span>Attendance</span></div>
+      <div><b>58%</b><span>Average score</span></div>
+      <div><b>TZS 320,000</b><span>Fees balance</span></div>
+    </div>
+    <div class="warning-box">Suspended because of overdue fees. Reactivate after payment is recorded.</div>
+    <div class="modal-foot">
+      <a href="#" class="btn">Record payment</a>
+      <a href="#" class="btn">View report card</a>
+      <a href="#edit-4" class="btn btn-primary">Edit student</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="edit-4" role="dialog" aria-label="Edit Baraka Mwita">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box" action="/students/4/edit" method="post">
+    <div class="modal-head"><div><h2>Edit student</h2><p>ST-2026-0452</p></div><a class="close" href="#list" aria-label="Close">&times;</a></div>
+    <div class="form-grid">
+      <label>First name *<input name="first_name" value="Baraka" required></label>
+      <label>Last name *<input name="last_name" value="Mwita" required></label>
+      <label>Gender<select name="gender"><option>Female</option><option selected>Male</option></select></label>
+      <label>Date of birth<input type="date" name="dob" value="2018-06-21"></label>
+      <label>Class<select name="class"><option selected>Standard 2</option><option>Standard 5</option><option>Form 1</option><option>Form 2</option></select></label>
+      <label>Status<select name="status"><option>Active</option><option selected>Suspended</option><option>Transferred</option><option>Graduated</option></select></label>
+      <label>Guardian name<input name="guardian_name" value="Elias Mwita"></label>
+      <label>Guardian phone<input type="tel" name="guardian_phone" value="+255 765 000 452"></label>
+      <label class="full">Home address<textarea name="address">Temeke, Dar es Salaam</textarea></label>
+    </div>
+    <div class="modal-foot"><a href="#list" class="btn">Cancel</a><button type="submit" class="btn btn-primary">Save changes</button></div>
+  </form>
+</div>
+
+<div class="modal" id="delete-4" role="dialog" aria-label="Delete Baraka Mwita">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box small" action="/students/4/delete" method="post">
+    <div class="modal-head"><h2>Delete Baraka Mwita?</h2><a class="close" href="#list" aria-label="Close">&times;</a></div>
+    <p>This removes the student record, attendance and results. This cannot be undone.</p>
+    <div class="warning-box">This student still has an unpaid fees balance of TZS 320,000.</div>
+    <div class="modal-foot"><a href="#list" class="btn">Keep student</a><button type="submit" class="btn btn-danger-solid">Delete student</button></div>
+  </form>
+</div>
+
+<!-- =====================================================
+     STUDENT 5: Zawadi Komba
+     ===================================================== -->
+<div class="modal" id="view-5" role="dialog" aria-label="Zawadi Komba details">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <div class="modal-box">
+    <div class="modal-head"><h2>Student details</h2><a class="close" href="#list" aria-label="Close">&times;</a></div>
+    <div class="profile">
+      <div class="avatar">ZK</div>
+      <div><h3>Zawadi Komba</h3><p>ST-2026-0519 · Form 2 B</p></div>
+      <span class="badge b-ok" style="margin-left:auto">Active</span>
+    </div>
+    <dl class="info">
+      <div><dt>Gender</dt><dd>Female</dd></div>
+      <div><dt>Date of birth</dt><dd>30 January 2010</dd></div>
+      <div><dt>Admitted</dt><dd>11 January 2023</dd></div>
+      <div><dt>Guardian</dt><dd>Anna Komba (Mother)</dd></div>
+      <div><dt>Guardian phone</dt><dd>+255 622 000 519</dd></div>
+      <div><dt>Guardian email</dt><dd>a.komba@example.com</dd></div>
+      <div><dt>Address</dt><dd>Kigamboni, Dar es Salaam</dd></div>
+      <div><dt>Blood group</dt><dd>AB</dd></div>
+      <div><dt>Health notes</dt><dd>Peanut allergy</dd></div>
+    </dl>
+    <p class="form-section">This term</p>
+    <div class="mini-stats">
+      <div><b>89%</b><span>Attendance</span></div>
+      <div><b>77%</b><span>Average score</span></div>
+      <div><b>TZS 90,000</b><span>Fees balance</span></div>
+    </div>
+    <div class="modal-foot">
+      <a href="#" class="btn">Print ID card</a>
+      <a href="#" class="btn">View report card</a>
+      <a href="#edit-5" class="btn btn-primary">Edit student</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="edit-5" role="dialog" aria-label="Edit Zawadi Komba">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box" action="/students/5/edit" method="post">
+    <div class="modal-head"><div><h2>Edit student</h2><p>ST-2026-0519</p></div><a class="close" href="#list" aria-label="Close">&times;</a></div>
+    <div class="form-grid">
+      <label>First name *<input name="first_name" value="Zawadi" required></label>
+      <label>Last name *<input name="last_name" value="Komba" required></label>
+      <label>Gender<select name="gender"><option selected>Female</option><option>Male</option></select></label>
+      <label>Date of birth<input type="date" name="dob" value="2010-01-30"></label>
+      <label>Class<select name="class"><option>Form 1</option><option selected>Form 2</option><option>Form 3</option><option>Form 4</option></select></label>
+      <label>Status<select name="status"><option selected>Active</option><option>Suspended</option><option>Transferred</option><option>Graduated</option></select></label>
+      <label>Guardian name<input name="guardian_name" value="Anna Komba"></label>
+      <label>Guardian phone<input type="tel" name="guardian_phone" value="+255 622 000 519"></label>
+      <label class="full">Home address<textarea name="address">Kigamboni, Dar es Salaam</textarea></label>
+    </div>
+    <div class="modal-foot"><a href="#list" class="btn">Cancel</a><button type="submit" class="btn btn-primary">Save changes</button></div>
+  </form>
+</div>
+
+<div class="modal" id="delete-5" role="dialog" aria-label="Delete Zawadi Komba">
+  <a class="modal-bg" href="#list" aria-label="Close"></a>
+  <form class="modal-box small" action="/students/5/delete" method="post">
+    <div class="modal-head"><h2>Delete Zawadi Komba?</h2><a class="close" href="#list" aria-label="Close">&times;</a></div>
+    <p>This removes the student record, attendance and results. This cannot be undone.</p>
+    <div class="warning-box">This student still has an unpaid fees balance of TZS 90,000.</div>
+    <div class="modal-foot"><a href="#list" class="btn">Keep student</a><button type="submit" class="btn btn-danger-solid">Delete student</button></div>
+  </form>
+</div>
+
+{% endblock main %}

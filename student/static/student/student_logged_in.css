@@ -1,0 +1,44 @@
+
+  /* Student dashboard specific styles. Base styles come from style.css */
+  .hello { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .hello .avatar { width: 64px; height: 64px; font-size: 22px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .chip { font-size: 13px; padding: 3px 12px; border-radius: 99px; background: var(--blue-soft); color: var(--blue); font-weight: 600; }
+
+  /* Today's classes */
+  .sched { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .sched li { display: grid; grid-template-columns: 112px 1fr auto; gap: 12px; align-items: center; padding: 10px 14px; border: 1px solid var(--line); border-left: 4px solid var(--ink-soft); border-radius: 8px; }
+  .sched time { font-size: 13px; color: var(--ink-soft); }
+  .sched b { display: block; font-size: 15px; }
+  .sched small { color: var(--ink-soft); font-size: 12px; }
+  .sched .room { font-size: 13px; color: var(--ink-soft); }
+  .sched li.gap { background: var(--paper); border-left-color: var(--line); color: var(--ink-soft); font-size: 13px; grid-template-columns: 112px 1fr; }
+  .c-blue { border-left-color: var(--blue) !important; }
+  .c-amber { border-left-color: var(--amber) !important; }
+  .c-teal { border-left-color: var(--teal) !important; }
+  .c-red { border-left-color: var(--red) !important; }
+
+  /* Attendance calendar */
+  .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; font-size: 13px; }
+  .cal .h { color: var(--ink-soft); font-size: 12px; padding-bottom: 2px; }
+  .cal .d { padding: 8px 0; border-radius: 8px; background: var(--paper); }
+  .cal .p { background: var(--teal-soft); color: var(--teal); font-weight: 600; }
+  .cal .l { background: var(--amber-soft); color: var(--ink); font-weight: 600; }
+  .cal .e { background: var(--blue-soft); color: var(--blue); font-weight: 600; }
+  .cal .a { background: var(--red-soft); color: var(--red); font-weight: 600; }
+  .cal .off { background: none; color: var(--ink-soft); opacity: .55; }
+  .cal .f { background: none; border: 1px dashed var(--line); color: var(--ink-soft); }
+  .cal .t { outline: 2px solid var(--amber); outline-offset: 1px; }
+  .cal-legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--ink-soft); margin-top: 14px; }
+  .cal-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; }
+
+  .grade { display: inline-block; min-width: 28px; text-align: center; padding: 2px 8px; border-radius: 6px; font-weight: 700; background: var(--teal-soft); color: var(--teal); }
+  .grade.b { background: var(--blue-soft); color: var(--blue); }
+  .big-line { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+  .big-line b { font-size: 26px; letter-spacing: -.01em; }
+  .stack { display: grid; gap: 24px; align-content: start; }
+
+  @media (max-width: 520px) {
+    .sched li { grid-template-columns: 1fr; gap: 2px; }
+    .sched li.gap { grid-template-columns: 1fr; }
+  }
