@@ -14,6 +14,7 @@ import os
 import dj_database_url
 from decouple import config
 
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -92,7 +93,7 @@ WSGI_APPLICATION = 'sms.wsgi.application'
 # }
 
 DATABASES = {
-    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+    'default': dj_database_url.config(default=config('DATABASE_URL'),conn_max_age=600, ssl_require=True)
 }
 
 
